@@ -798,5 +798,197 @@
     "source_signature": "4601a20035f8d8813a9719eb83d04c04ced320887d663dcdd01c98e6c87823e4",
     "source_tree": "2c3f0c46f41c91555a018c59ee94678595f42686",
     "version": "1.0.3"
+  },
+  "liberusoftware/profiles": {
+    "path": "modules/profiles",
+    "reference": "2a429a0bd16c9ed582a009e19c9c9a71d5f2e7bb",
+    "repository": "https://github.com/liberusoftware/module-profiles",
+    "source_signature": "c0bcf1f42c0d00ff580f43cf0775554a836da7b14f8ce57be3eeba871f1242ad",
+    "source_tree": "3a2c247167926900315b2c3dbb2ee14585a07113",
+    "version": "1.6.0"
+  },
+  "liberusoftware/profiles-api": {
+    "path": "modules/profiles-api",
+    "reference": "715786e3a5e9a0962ff69ce2031c57990302b215",
+    "repository": "https://github.com/liberusoftware/module-profiles-api",
+    "source_signature": "27e0491f8f89392982efb3cfb907826d275cd3d5dc17ac73ca043f2a52ed97ce",
+    "source_tree": "1c5890e946fcbf9b86e584a817b6264f1e73b614",
+    "version": "1.0.2"
+  },
+  "liberusoftware/profiles-livewire": {
+    "path": "modules/profiles-livewire",
+    "reference": "3ee4a744d3210dc51bdc3a9a8c792baedbbb49eb",
+    "repository": "https://github.com/liberusoftware/module-profiles-livewire",
+    "source_signature": "b050887974c87bcb2326f71fcae582efd9e97c213dcbf925c70bb5de03dc4e52",
+    "source_tree": "37f4a08c88f68eb3b172abb8a3c4b0772a7be29d",
+    "version": "1.0.3"
+  },
+  "liberusoftware/roles-permissions-api": {
+    "path": "modules/roles-permissions-api",
+    "reference": "2a54e77c0690e65c3d1ffcf2aa88b2c9181e0577",
+    "repository": "https://github.com/liberusoftware/module-roles-permissions-api",
+    "source_signature": "15a568463518268cad49f0944b451f676c0ecd3b838436bf754f109f8dc9c675",
+    "source_tree": "ccbff9995d7af73d2416b077bef8ba28f32925b4",
+    "version": "1.1.0"
+  },
+  "liberusoftware/roles-permissions-livewire": {
+    "path": "modules/roles-permissions-livewire",
+    "reference": "c627ec00448694bfd32fc33ce6bb257f42a6578b",
+    "repository": "https://github.com/liberusoftware/module-roles-permissions-livewire",
+    "source_signature": "7970f46fd8d5556b21c7f467e7a2de3522b07c749cb59c6e4bc5aaa787d2f169",
+    "source_tree": "978e3c0e6ac1ef980bb3d780218e7fa7be136f5d",
+    "version": "1.1.0"
+  },
+  "liberusoftware/scheduler-queues-api": {
+    "path": "modules/scheduler-queues-api",
+    "reference": "697cad9a1cab19501f2eb1197f3f4026c54e8f07",
+    "repository": "https://github.com/liberusoftware/module-scheduler-queues-api",
+    "source_signature": "095299d2a6b76f78885c5f77146dbb3e9b414030e276ab93602a85c3c5918931",
+    "source_tree": "9ecd22a9c9c4f62436b77245b1098d156c33b279",
+    "version": "1.1.0"
+  },
+  "liberusoftware/scheduler-queues-livewire": {
+    "path": "modules/scheduler-queues-livewire",
+    "reference": "3af253a8d5f9e7222a0c3b50c8c6f7cbd5ffff3e",
+    "repository": "https://github.com/liberusoftware/module-scheduler-queues-livewire",
+    "source_signature": "575e38191ce8e3245e5c1d97e495fede55ea8dd82250b63226d2eb6950bfb965",
+    "source_tree": "9f07c1dfaebe2a62e1fbc6790a4de1033d280b81",
+    "version": "1.1.0"
+  },
+  "liberusoftware/search-api": {
+    "path": "modules/search-api",
+    "reference": "de4d387b081246e22aeb47149b412355c27a8c55",
+    "repository": "https://github.com/liberusoftware/module-search-api",
+    "source_signature": "1fb715fcdd3e32fe4beddd7a39977dbc79c65ea96e2dc181c85774282286da51",
+    "source_tree": "fb8f80908fcabaf4a841926759c1439dcde99450",
+    "version": "1.6.1"
+  },
+  "liberusoftware/search-livewire": {
+    "path": "modules/search-livewire",
+    "reference": "4466ddb28c5cd9e026f2b28c2d69c26ae3c3a9ea",
+    "repository": "https://github.com/liberusoftware/module-search-livewire",
+    "source_signature": "9c57094232447eec2fbbcd3e8259633c11ee0057d19b11a438c599975964181f",
+    "source_tree": "b319cfb69cab9f1dfdd835e2db511bbb37f42ec4",
+    "version": "1.1.0"
+  },
+  "liberusoftware/sessions-devices": {
+    "path": "modules/sessions-devices",
+    "reference": "50174438d8f823f16390ca06093f67967ccb5c1d",
+    "repository": "https://github.com/liberusoftware/module-sessions-devices",
+    "source_signature": "aaa15409777dd8920ad9b02b13f2f7e6899581f4adaefd6c18e6258c30d099f0",
+    "source_tree": "86dff081059ee1edb16ebc24d6644f11a2ee2a63",
+    "version": "1.5.1"
+  },
+  "liberusoftware/sessions-devices-api": {
+    "path": "modules/sessions-devices-api",
+    "reference": "4d09bbbfe4d84d3997e177ab49e52955fdae64a9",
+    "repository": "https://github.com/liberusoftware/module-sessions-devices-api",
+    "source_signature": "a9646ac8fa2ea166b89dc8bc2b9ff85b9cb9ef1cbd214d742fb855ddbf2af413",
+    "source_tree": "cc208832b24d1da1a6880ab7d45d5ababea9f646",
+    "version": "1.1.0"
+  },
+  "liberusoftware/sessions-devices-livewire": {
+    "path": "modules/sessions-devices-livewire",
+    "reference": "967460549206420657a1916ac03940de66f8d05e",
+    "repository": "https://github.com/liberusoftware/module-sessions-devices-livewire",
+    "source_signature": "95a92c73dd5895b98a9d8ca15c31a3e72050608eccee51041dfa9c210a7c48ce",
+    "source_tree": "40cac249c5033bb312648e69310f1a1e6e3531bd",
+    "version": "1.1.0"
+  },
+  "liberusoftware/settings-api": {
+    "path": "modules/settings-api",
+    "reference": "0ec54d1143608098c77337920363fc8693a353d8",
+    "repository": "https://github.com/liberusoftware/module-settings-api",
+    "source_signature": "3909592c2c2bb425af6b37399f5a044b7d1ad3c8040bbc219349998d1e768631",
+    "source_tree": "5bb468bee6f0353740cf61da223b47ff95676825",
+    "version": "1.1.0"
+  },
+  "liberusoftware/settings-livewire": {
+    "path": "modules/settings-livewire",
+    "reference": "9175b5d42549b14c527149ff35a460017b89bf6a",
+    "repository": "https://github.com/liberusoftware/module-settings-livewire",
+    "source_signature": "db81eb445f45305f04f5540059bce83d5466c969fe41d4cbc9b3654a9d0c7272",
+    "source_tree": "45cff815d82c25c18be6a5959c8ac87cba3fbe65",
+    "version": "1.1.0"
+  },
+  "liberusoftware/theme-base": {
+    "path": "themes/base",
+    "reference": "eee9837aa9b87dd99767e63f6890cd393f3aed2b",
+    "repository": "https://github.com/liberusoftware/theme-base",
+    "source_signature": "030cffc5b41c1e95eab72166d310cf53e279d2a485a001e1fa2217131a889e67",
+    "source_tree": "af88bbfa36593a4fbed8284a61d98f30658868a4",
+    "version": "2.3.0"
+  },
+  "liberusoftware/theme-dark": {
+    "path": "themes/dark",
+    "reference": "abc6fa5c8a815b64df3b37a8eecf55cb6bd4c5ee",
+    "repository": "https://github.com/liberusoftware/theme-dark",
+    "source_signature": "d1c433d600b3105e715b6b143d43cc26fef00231ae179e21b009573b05defe13",
+    "source_tree": "9f6068f5ca8da1331ceb882ec20fb7b434fefc19",
+    "version": "1.10.0"
+  },
+  "liberusoftware/theme-support-livewire": {
+    "path": "modules/theme-support-livewire",
+    "reference": "808a95a465b2702923921f07b21a5cb9b0982663",
+    "repository": "https://github.com/liberusoftware/module-theme-support-livewire",
+    "source_signature": "8d037f1a0027ab325b948ff2327e59380e8d910efeb5e435cb5a2b62bba86f8f",
+    "source_tree": "ec54af6eb72a681166cd41f4bb7ca88ebf1c2612",
+    "version": "1.6.1"
+  },
+  "liberusoftware/two-factor-authentication": {
+    "path": "modules/two-factor-authentication",
+    "reference": "3ca80cbc17980d9749faf765c0db847ba43c4d29",
+    "repository": "https://github.com/liberusoftware/module-two-factor-authentication",
+    "source_signature": "bdc7d5e730187b97a8d079b0a4dcf690e113a9c7d76149e48aeabe9066abf199",
+    "source_tree": "21c52926225fb1ae0bfffe3ef3dd15535a9fecb2",
+    "version": "1.4.6"
+  },
+  "liberusoftware/two-factor-authentication-api": {
+    "path": "modules/two-factor-authentication-api",
+    "reference": "899e14b098bf82af7fe020a57902523581fcd63d",
+    "repository": "https://github.com/liberusoftware/module-two-factor-authentication-api",
+    "source_signature": "a156d25c647d6d46d9c9b0b244f7a7e9ef84a036bb18653a1a770b2b9aa70ed1",
+    "source_tree": "a4b67000e535d679e68a2ca822d83ed1b70a2a92",
+    "version": "1.1.0"
+  },
+  "liberusoftware/two-factor-authentication-livewire": {
+    "path": "modules/two-factor-authentication-livewire",
+    "reference": "5e998edd200193decb0dc9c37a89ab5fe0b1743a",
+    "repository": "https://github.com/liberusoftware/module-two-factor-authentication-livewire",
+    "source_signature": "8e00af74ee18ec82f982abe970717f355c17b287e476208eaf5135bb644f7906",
+    "source_tree": "e3b5d3359ab7a77c2b0b5b89be719407f37fe800",
+    "version": "1.1.0"
+  },
+  "liberusoftware/users-roles": {
+    "path": "modules/users-roles",
+    "reference": "4aa49df470411bdea1f54abd1a6e76c6173b68d9",
+    "repository": "https://github.com/liberusoftware/module-users-roles",
+    "source_signature": "96033d42d8fc17173e90e6666fb0019d2b232b7ff059b4f520990da2fd7047bc",
+    "source_tree": "4bae1d5190dfbfabb38b1427eeb20930b66738c2",
+    "version": "1.0.3"
+  },
+  "liberusoftware/webhooks": {
+    "path": "modules/webhooks",
+    "reference": "840c0cdc9064abe3a2a61700d12901a60e585ae3",
+    "repository": "https://github.com/liberusoftware/module-webhooks",
+    "source_signature": "a745e5565822b3b055cac838750c61ce0883a5983fcbe531358a3a5a6e59946d",
+    "source_tree": "ea3d2986ba904f6b090f0bab790de3cf91886a68",
+    "version": "1.5.1"
+  },
+  "liberusoftware/webhooks-api": {
+    "path": "modules/webhooks-api",
+    "reference": "483eb7d9bf6ffac8ad2640f1da5cc6c1c288f996",
+    "repository": "https://github.com/liberusoftware/module-foundation-webhooks-api",
+    "source_signature": "0320eca87d318bbe3236d8df1cc5a1548fff1845ab4141e9e2db430d1fdfdf86",
+    "source_tree": "d0c470314157fc9e2a69af4da6fcadd93108d96b",
+    "version": "1.0.2"
+  },
+  "liberusoftware/webhooks-livewire": {
+    "path": "modules/webhooks-livewire",
+    "reference": "3d36994165e0edec89113e20ecf75f071bbb6f3d",
+    "repository": "https://github.com/liberusoftware/module-webhooks-livewire",
+    "source_signature": "4f076fdbee692e27a4dd089baee49062ae362d4d15a9e9e06a24b8a8d1fade12",
+    "source_tree": "e7c91f73efdb8ff5a2b7a311adfc9ab346e312ac",
+    "version": "1.1.0"
   }
 }
