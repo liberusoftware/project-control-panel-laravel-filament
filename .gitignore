@@ -61,3 +61,6 @@ docs/superpowers
 # Python installer and test bytecode
 __pycache__/
 *.py[cod]
+# Installed from Packagist, not carried here.
+/modules/module-manager/
+/modules/module-manager-filament/
