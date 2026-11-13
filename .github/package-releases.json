@@ -1,0 +1,402 @@
+{
+  "liberusoftware/activity-comments": {
+    "path": "modules/activity-comments",
+    "reference": "e8ec0f8ba6dcb8194ac959cad72d3dfaac6eb970",
+    "repository": "https://github.com/liberusoftware/module-activity-comments",
+    "source_signature": "4a322050f76af41eb4aaf57ed2c26d6e94f6664abd4a9af04a0b733cd5c2ab93",
+    "source_tree": "1fd686264414863bfede1d809279b4ca3e529570",
+    "version": "1.4.14"
+  },
+  "liberusoftware/activity-comments-api": {
+    "path": "modules/activity-comments-api",
+    "reference": "90b2531198b752d876eb8263d63b5ecebe1e7cdf",
+    "repository": "https://github.com/liberusoftware/module-activity-comments-api",
+    "source_signature": "dfc6e4aa4cc66f12f5884abae1d82765420e07ba85dabdea5fc54fc2515a27bc",
+    "source_tree": "9d0a88694e17115baa777b6dfb6e0f7f5ee54e6d",
+    "version": "1.0.2"
+  },
+  "liberusoftware/activity-comments-livewire": {
+    "path": "modules/activity-comments-livewire",
+    "reference": "012209294fa004a56be740a52e158e2f80e4b809",
+    "repository": "https://github.com/liberusoftware/module-activity-comments-livewire",
+    "source_signature": "339e45032229972921aa17267184869e7a9ae0d07b7f9907714bf6153ef2c54e",
+    "source_tree": "fbe4ab9ab4e772b87e00068195481d8b023dd4ed",
+    "version": "1.0.3"
+  },
+  "liberusoftware/analytics-core": {
+    "path": "modules/analytics-core",
+    "reference": "3e40afe8e69d0e876fcefa57fbe17e58e7745d77",
+    "repository": "https://github.com/liberusoftware/module-analytics-core",
+    "source_signature": "20206754ae36ac09ab2060476fe4b7a4d5c583532e9279ef3989c869e1246f0a",
+    "source_tree": "ee8522888cb46b38ea6c2e409a39725c7d2b89fd",
+    "version": "1.9.3"
+  },
+  "liberusoftware/analytics-core-api": {
+    "path": "modules/analytics-core-api",
+    "reference": "ef1da3fa50c2caeaad69abd225ef16e4560c98b5",
+    "repository": "https://github.com/liberusoftware/module-analytics-core-api",
+    "source_signature": "4d57a0d68bcf7d8f676d2a5b6c8ef1789f05b7a23110cc6948ee0fe1fe565b44",
+    "source_tree": "f2d924f2715044cf5e4b05f9a893d6a81dc5e915",
+    "version": "1.0.2"
+  },
+  "liberusoftware/analytics-core-livewire": {
+    "path": "modules/analytics-core-livewire",
+    "reference": "060bd28d6fc442f261e56b3dae7d6cd3fa5c8742",
+    "repository": "https://github.com/liberusoftware/module-analytics-core-livewire",
+    "source_signature": "d2f089e97a60254605d21eec9dd75251c52d592750bf84613ce94eb31b8f56e3",
+    "source_tree": "25082949419281a36f0b3ef3f322a296d618456d",
+    "version": "1.0.3"
+  },
+  "liberusoftware/analytics-google": {
+    "path": "modules/analytics-google",
+    "reference": "aca9d05df3136a0236fb028b937c819c9be27361",
+    "repository": "https://github.com/liberusoftware/module-analytics-google",
+    "source_signature": "5608a1e2c91be2e9c163f6fb2086db4fa8999aa305a369d20e2109b533d08022",
+    "source_tree": "ba3e55e3161e464ad48b8b6a96d976dd11b81bb9",
+    "version": "1.5.10"
+  },
+  "liberusoftware/analytics-google-api": {
+    "path": "modules/analytics-google-api",
+    "reference": "5e10b092d8f0c836d67cd96356634d26fdcc629b",
+    "repository": "https://github.com/liberusoftware/module-analytics-google-api",
+    "source_signature": "583b47c87aabd5ac0b2270fabee148ce4a3816a8f2025caba403cbea4ae0e68c",
+    "source_tree": "15c73953e1c9f7d74a7ff6d2e80f54935e49bcb0",
+    "version": "1.0.2"
+  },
+  "liberusoftware/analytics-google-livewire": {
+    "path": "modules/analytics-google-livewire",
+    "reference": "67ef3e7b5b09f6dd5f9a208d9133b2c54c471737",
+    "repository": "https://github.com/liberusoftware/module-analytics-google-livewire",
+    "source_signature": "8336e6f1babd82484bf07397f29d07ba2b492caecd3743928151fc7f09979f8e",
+    "source_tree": "4db10098ad85f4448338038f6d7533680dd30867",
+    "version": "1.0.3"
+  },
+  "liberusoftware/analytics-meta": {
+    "path": "modules/analytics-meta",
+    "reference": "d36ddcf63fc84f6cc5ce99a4ea97321b710c363a",
+    "repository": "https://github.com/liberusoftware/module-analytics-meta",
+    "source_signature": "a9c339e198cce4205117c6a0bed37664c2a64109d7ba844fd44a1fc3d14242db",
+    "source_tree": "4b447a176265377639303bc5033bf1d8b77222f9",
+    "version": "1.4.13"
+  },
+  "liberusoftware/analytics-meta-api": {
+    "path": "modules/analytics-meta-api",
+    "reference": "5a87379df31fb9be09f650550b5080ead70db8aa",
+    "repository": "https://github.com/liberusoftware/module-analytics-meta-api",
+    "source_signature": "fa70071837bca8305f0d9ea21b4105007dc917310d8a9bd2bb0f3e7ca5b44504",
+    "source_tree": "5fcf3c96ebc48a314ce7550f8d195a627b8e970f",
+    "version": "1.0.2"
+  },
+  "liberusoftware/analytics-meta-livewire": {
+    "path": "modules/analytics-meta-livewire",
+    "reference": "f5854fd44ea2180ac1e3d8d37008344fdeea840a",
+    "repository": "https://github.com/liberusoftware/module-analytics-meta-livewire",
+    "source_signature": "36fc4ca7b1f23a0059c8d5ed4ad7f337c5eb2d4b019a942a94db5af82457f474",
+    "source_tree": "59df1f3b5fe3026368d66e5455b1e7a027d0e6cd",
+    "version": "1.0.3"
+  },
+  "liberusoftware/api-access-api": {
+    "path": "modules/api-access-api",
+    "reference": "485bed72b3df3c10cc0967a654f0ae6ff7e348fd",
+    "repository": "https://github.com/liberusoftware/module-api-access-api",
+    "source_signature": "5b506c3f6bbb5ded633e14a667323af295c2adcd5fc20a66d138af9b1badfd4a",
+    "source_tree": "8a613ff2cdb9ceee2826b310aeec5dc3e47f1e9a",
+    "version": "1.0.2"
+  },
+  "liberusoftware/api-access-livewire": {
+    "path": "modules/api-access-livewire",
+    "reference": "54896103550ac0ff727ded8c8caf6ac8c32a0347",
+    "repository": "https://github.com/liberusoftware/module-api-access-livewire",
+    "source_signature": "8a46bac3a90b9fba7fc98ab239e2617850e4c11b69a473fe9cb95a047bdced92",
+    "source_tree": "0440fa5da7daea3339cd6ae8bc2e6b94865524c5",
+    "version": "1.0.3"
+  },
+  "liberusoftware/application": {
+    "path": "modules/application",
+    "reference": "4031feeda93b25d97f271578f29f31ae7beac35b",
+    "repository": "https://github.com/liberusoftware/module-application",
+    "source_signature": "edaf383924606e4b68df5f1b3daf10d4b3ebdf29c1dd6c639fd368f4d84682ca",
+    "source_tree": "fbd8d99cc3ac3f41f440f83751eea0314d69a2b8",
+    "version": "1.10.0"
+  },
+  "liberusoftware/application-api": {
+    "path": "modules/application-api",
+    "reference": "44386e3fff88b22020643bca6733601e695f9923",
+    "repository": "https://github.com/liberusoftware/module-application-api",
+    "source_signature": "6d08db01a2048311b999aee61774ed8be6ddb537e732a947c7e1ebdcff626bf0",
+    "source_tree": "2b013a0a72df3b516aa3c44c16f9d26c6dab3e34",
+    "version": "1.0.2"
+  },
+  "liberusoftware/application-livewire": {
+    "path": "modules/application-livewire",
+    "reference": "e35f18150116c2f772d210b2fe2ad3a259dc1417",
+    "repository": "https://github.com/liberusoftware/module-application-livewire",
+    "source_signature": "6d9673499126f77415f39be5b1be5c4183c3f774698d19e6c78b29f512fd13d5",
+    "source_tree": "d8b55c4fd068df98d5d0e6342258a5e2e68eb352",
+    "version": "1.0.3"
+  },
+  "liberusoftware/audit-api": {
+    "path": "modules/audit-api",
+    "reference": "2d700e303bc6b2ffa41c901d5c2a3e9317ee7c49",
+    "repository": "https://github.com/liberusoftware/module-audit-api",
+    "source_signature": "8671082b87ae99638a2ea48a900a1115b8d0e1a7891c4754ef63f41644a841bd",
+    "source_tree": "31de08499a3d902260ef3e3c386c1a7d9f60807f",
+    "version": "1.0.2"
+  },
+  "liberusoftware/audit-livewire": {
+    "path": "modules/audit-livewire",
+    "reference": "5f2b3f63d950849e3287f269ace7bb7aab5e0bfa",
+    "repository": "https://github.com/liberusoftware/module-audit-livewire",
+    "source_signature": "f772c8b6ecdc86a4074414fdf3bf40c2de3b182f4ef8e2c0a582b78c7f8b3365",
+    "source_tree": "80f4748567039aca90d1ba406d8e7517f0efe143",
+    "version": "1.0.3"
+  },
+  "liberusoftware/currency-context": {
+    "path": "modules/currency-context",
+    "reference": "d7f1cce6a5349f857f1ce0e6ac313429c7263405",
+    "repository": "https://github.com/liberusoftware/module-currency-context",
+    "source_signature": "7dd957b02508e32aa1702dc9e9f790d5d765186e316e24e5492def79f510aaa8",
+    "source_tree": "195d7a2b3b4f726175bdc49262485cfcc32e4c4b",
+    "version": "1.6.0"
+  },
+  "liberusoftware/currency-context-api": {
+    "path": "modules/currency-context-api",
+    "reference": "a9ba49a98ffea8ba3e0b8965564cfac25fd3fa87",
+    "repository": "https://github.com/liberusoftware/module-currency-context-api",
+    "source_signature": "6ac22a4ce46e0105a37e833f2dfd75878efdefa46f3aee166fe76547215b76dd",
+    "source_tree": "4d77ebcea30473eb624cee1bf9d6140987360943",
+    "version": "1.0.2"
+  },
+  "liberusoftware/currency-context-livewire": {
+    "path": "modules/currency-context-livewire",
+    "reference": "71a129045a72abc1dfa9e67062101fa3d2574ee6",
+    "repository": "https://github.com/liberusoftware/module-currency-context-livewire",
+    "source_signature": "b395df932b4b044e6206a85deed5a169c9b165c3fe6f7429780576ad9c03b9c0",
+    "source_tree": "ff703d837ab1ff962a729a98489aba6468eabfb0",
+    "version": "1.0.3"
+  },
+  "liberusoftware/developer-experience": {
+    "path": "modules/developer-experience",
+    "reference": "7e7b4081adf7b6438f42056fde7acbff4ff4d6af",
+    "repository": "https://github.com/liberusoftware/module-developer-experience",
+    "source_signature": "55f8e54a01374bcfe73894bd43850088b4caaf5415c143abe8f28d41d162f8e9",
+    "source_tree": "dce0754aa31d97d6f54ab98ccb6ea6ef53db3cef",
+    "version": "1.4.13"
+  },
+  "liberusoftware/developer-experience-api": {
+    "path": "modules/developer-experience-api",
+    "reference": "aeb973d8418537e41c784cc9f6a3b7bf4b8b2cb7",
+    "repository": "https://github.com/liberusoftware/module-developer-experience-api",
+    "source_signature": "7c4030d1e251c041b37fc474d2e87d71272c58b81a59b0b7716d26cdb7aca0cb",
+    "source_tree": "25e2a0c5b7789b7d93223041b2e0012acdd290e7",
+    "version": "1.0.2"
+  },
+  "liberusoftware/developer-experience-livewire": {
+    "path": "modules/developer-experience-livewire",
+    "reference": "6149a7a27f057aa79a411599fa4168c3d58009a8",
+    "repository": "https://github.com/liberusoftware/module-developer-experience-livewire",
+    "source_signature": "b6a122229bb92b5867c3bc91b66f77e4f51800b68b8577dd7251b006ed043675",
+    "source_tree": "cadeeab4a9e01399f4727cb55c7a7db59bc339e2",
+    "version": "1.0.3"
+  },
+  "liberusoftware/feature-flags": {
+    "path": "modules/feature-flags",
+    "reference": "ac9959891cbce56cb62d76e3f0e8bed88fc829d8",
+    "repository": "https://github.com/liberusoftware/module-feature-flags",
+    "source_signature": "a89d880fcbba5cef6511d7e848e7928baea81cb3aada451d21451aaf44e26f8e",
+    "source_tree": "135003e4147920d1e9bbcf1eb7eddc18d0571f7c",
+    "version": "1.4.13"
+  },
+  "liberusoftware/feature-flags-api": {
+    "path": "modules/feature-flags-api",
+    "reference": "f360a749c460b2e711585403336e64aff0e9fe7d",
+    "repository": "https://github.com/liberusoftware/module-feature-flags-api",
+    "source_signature": "349518dde2e0071efbc9357cc1badaa8b84d01b972312c2b2cfd73d5accf5593",
+    "source_tree": "ddff551e84a9ddbe23c6cb8bcf7dca563133cf3d",
+    "version": "1.0.2"
+  },
+  "liberusoftware/feature-flags-livewire": {
+    "path": "modules/feature-flags-livewire",
+    "reference": "91a6e323626394133e0a46d237c966e25ad4d00a",
+    "repository": "https://github.com/liberusoftware/module-feature-flags-livewire",
+    "source_signature": "f19ebe436987e28817a54fd33a2bd2e42533804b17d330aa077df956e782ac1d",
+    "source_tree": "87e01723ea9610b42d9c5bc69c9cd536c48aea85",
+    "version": "1.0.3"
+  },
+  "liberusoftware/files-media": {
+    "path": "modules/files-media",
+    "reference": "361830e0f03ca6d1cc0ed8c0ac5430103c75c6d5",
+    "repository": "https://github.com/liberusoftware/module-files-media",
+    "source_signature": "08c2e981d85add2306ebbad119a59134815a1505839dd880c170b3f05f4f8127",
+    "source_tree": "d222c6ba65fc6097a1e03c1d9a3ce75e6f3888cb",
+    "version": "1.5.10"
+  },
+  "liberusoftware/files-media-api": {
+    "path": "modules/files-media-api",
+    "reference": "44e907adbab817ee0113fe0660760a37ecaead85",
+    "repository": "https://github.com/liberusoftware/module-files-media-api",
+    "source_signature": "e1d91ab75e571cb6351c92b11bd67f1d2d132250af0268da77343668b14c88a5",
+    "source_tree": "838ee843f3ad057006390caa8a3c5296d5d6c34e",
+    "version": "1.0.2"
+  },
+  "liberusoftware/files-media-livewire": {
+    "path": "modules/files-media-livewire",
+    "reference": "8da24743da8b5f59c3c5a7fac33b365564a03a52",
+    "repository": "https://github.com/liberusoftware/module-files-media-livewire",
+    "source_signature": "daa6c686bd2073a8e399ffc829e8cd3c907c9e5f34e56ddfa1b101b99fe956a8",
+    "source_tree": "a807eef7acbf6892c068580dca938f36aa76098c",
+    "version": "1.0.3"
+  },
+  "liberusoftware/identity-core": {
+    "path": "modules/identity-core",
+    "reference": "67381d9c850f8e35dfd049456d2a1bded25b4e38",
+    "repository": "https://github.com/liberusoftware/module-identity-core",
+    "source_signature": "74e0dca2a57dbec311a3efcd01d0f4c9edae993c3b423618b89b0fab69ca7ba7",
+    "source_tree": "036da197af9007c183d8ea1fdca8519db049ae24",
+    "version": "1.7.0"
+  },
+  "liberusoftware/identity-core-livewire": {
+    "path": "modules/identity-core-livewire",
+    "reference": "191a3fc236adb011f21072beb062050cc61c82b5",
+    "repository": "https://github.com/liberusoftware/module-identity-core-livewire",
+    "source_signature": "16512b244db95138612e821c8a8077bb843672df1c97bd59c98924303380a735",
+    "source_tree": "7cf9ee50cd86eccf70e96065cf39159409460564",
+    "version": "1.0.3"
+  },
+  "liberusoftware/identity-socialstream": {
+    "path": "modules/identity-socialstream",
+    "reference": "e484188edcbcaf6ec395a2c7c91cac6989b3874e",
+    "repository": "https://github.com/liberusoftware/module-identity-socialstream",
+    "source_signature": "2417d4ac4cfc1cb6a7163460c78d275caf70a3b42d376b0c0a045059f5880206",
+    "source_tree": "010c4420bb75f1faa95d1f3b2fa59a0b976a8a20",
+    "version": "1.8.1"
+  },
+  "liberusoftware/import-export-api": {
+    "path": "modules/import-export-api",
+    "reference": "d6046e4f25d98ebe8a43289e13230a9f0d9ee433",
+    "repository": "https://github.com/liberusoftware/module-import-export-api",
+    "source_signature": "7d55ddb2b8d57a6ed67136321af0594d63445ab69e5923982275f7e90118712e",
+    "source_tree": "4955058fb46e69e5f8f262c11b3d7f4c397bd32c",
+    "version": "1.0.2"
+  },
+  "liberusoftware/import-export-livewire": {
+    "path": "modules/import-export-livewire",
+    "reference": "f9b50226a5be4e1806b757f55238052a9cbde7bb",
+    "repository": "https://github.com/liberusoftware/module-import-export-livewire",
+    "source_signature": "7fd6202adeba766f609db5ab85e366e5223b3b893e85ceba4ccbc2c9442da8cb",
+    "source_tree": "ca316243e661af357991c7dbee06b374d7764eec",
+    "version": "1.0.3"
+  },
+  "liberusoftware/integrations-api": {
+    "path": "modules/integrations-api",
+    "reference": "b3ce3c6f804d2d9cdac5bda4d33367932b0b1154",
+    "repository": "https://github.com/liberusoftware/module-integrations-api",
+    "source_signature": "25102b95c1d95a8d7b9ecadf80c1284a67c4c092371b40a0fed45afe152bd192",
+    "source_tree": "ff6ef1b8800c9118dcae7a8c762c95d7afe6526a",
+    "version": "1.0.2"
+  },
+  "liberusoftware/integrations-livewire": {
+    "path": "modules/integrations-livewire",
+    "reference": "967a7b6414976e4078f0b2863efb2c742cd3418a",
+    "repository": "https://github.com/liberusoftware/module-integrations-livewire",
+    "source_signature": "1c5d662b3528e38e8bd188dc94f7445bf957172fde1667a48336984afdfdcf3c",
+    "source_tree": "69fd29af0b004279b7361d81883a7d8462e9214a",
+    "version": "1.0.3"
+  },
+  "liberusoftware/jetstream-bridge": {
+    "path": "modules/jetstream-bridge",
+    "reference": "09da8fb9fe08dfb240854b5663611295079ff903",
+    "repository": "https://github.com/liberusoftware/module-jetstream-bridge",
+    "source_signature": "f5c6fac1c5a36f432238f01ea65650da3617d29b2e82fede9f815e6ee3304b30",
+    "source_tree": "9a4e3cf2bca4b5f7f17fd5fa32ae21a41b960abb",
+    "version": "1.4.13"
+  },
+  "liberusoftware/jetstream-bridge-api": {
+    "path": "modules/jetstream-bridge-api",
+    "reference": "49564b5736d99312ccc04879d785b554b4f0f9b6",
+    "repository": "https://github.com/liberusoftware/module-jetstream-bridge-api",
+    "source_signature": "84c5ed762108c33db710d972cb14c4a2d348bb60904241644eb336936a2dca99",
+    "source_tree": "e5625bc85b3cdb4d9a84a8092cbffbd4ec4a78e7",
+    "version": "1.0.2"
+  },
+  "liberusoftware/jetstream-bridge-livewire": {
+    "path": "modules/jetstream-bridge-livewire",
+    "reference": "93d828e3f062afe3aa6560e36856166c0633d75e",
+    "repository": "https://github.com/liberusoftware/module-jetstream-bridge-livewire",
+    "source_signature": "8b4347fe0a4add9a295cd80197082b2f124e9818c261c776debed5b1908dcde9",
+    "source_tree": "c5cacf496b9be541bb4470847acb7d5de12da11c",
+    "version": "1.0.3"
+  },
+  "liberusoftware/localization-core": {
+    "path": "modules/localization-core",
+    "reference": "8295e5987b717216122ebd1b231af0b5536089a5",
+    "repository": "https://github.com/liberusoftware/module-localization-core",
+    "source_signature": "9197cb4e477a239a94dac562ba3f4b4b775ad022b115c3145424ac7a73a3a9fd",
+    "source_tree": "4848a2e8f44a4b4c0561519a49e8f93efb2ae913",
+    "version": "1.5.0"
+  },
+  "liberusoftware/localization-core-api": {
+    "path": "modules/localization-core-api",
+    "reference": "ae79b9748044573c691b15b9d0c05397a64af757",
+    "repository": "https://github.com/liberusoftware/module-localization-core-api",
+    "source_signature": "1640744f85ecb90e67fab9e26e7cd5851ab6b257e16293e5d13fe99594ab30f7",
+    "source_tree": "8e2a67e42f3b58f5d3161b3bc8c1780ee380c81d",
+    "version": "1.0.2"
+  },
+  "liberusoftware/localization-core-livewire": {
+    "path": "modules/localization-core-livewire",
+    "reference": "94fc0fbc1f82d1a9edd821eaacf33a71a4c1946e",
+    "repository": "https://github.com/liberusoftware/module-localization-core-livewire",
+    "source_signature": "b9336ae6e37ca79bb186b1cfb1dbdca033a7d36adab0f8f9a35a1b877b11b404",
+    "source_tree": "b45bf76e3505c9e8859ec36ab21eec5d276ce30a",
+    "version": "1.5.2"
+  },
+  "liberusoftware/localization-mymemory": {
+    "path": "modules/localization-mymemory",
+    "reference": "0c3f81705fd2a56d0715e47e7cdc1d04e9b21f92",
+    "repository": "https://github.com/liberusoftware/module-localization-mymemory",
+    "source_signature": "b5703aec89f1cdc957985cda376d8f21283504968dfd67a7c18020fd7671ee12",
+    "source_tree": "e1d22894512f0441f3acdf139eea00e1fb334468",
+    "version": "1.5.0"
+  },
+  "liberusoftware/module-control-panel-accounts": {
+    "path": "modules/control-panel-accounts",
+    "reference": "7ed327cc31853c9e066ac27973d3fb2a2961f238",
+    "repository": "https://github.com/liberusoftware/module-control-panel-accounts",
+    "source_signature": "e9699f7bf309ea3986ab942da01dace582c30de1231f09361d8fe4e5808d4de3",
+    "source_tree": "edfa474a620be729418e87ce73cc5bacffa5ecce",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-accounts-api": {
+    "path": "modules/control-panel-accounts-api",
+    "reference": "9171f09d6975df954a0954c29fd143a40cdbaee2",
+    "repository": "https://github.com/liberusoftware/module-control-panel-accounts-api",
+    "source_signature": "997a8fc97dbd27d3dd1b1686471ad92504518f50e25671ed71e19132be95ab1f",
+    "source_tree": "762a1f8600cae80cf4776a2f9bef830037c081a7",
+    "version": "1.0.3"
+  },
+  "liberusoftware/module-control-panel-accounts-livewire": {
+    "path": "modules/control-panel-accounts-livewire",
+    "reference": "d288cdc9844f032c3282b31d0fdce6caacc16334",
+    "repository": "https://github.com/liberusoftware/module-control-panel-accounts-livewire",
+    "source_signature": "debbd3ad1f4cc67c2d892b13133cb92eed0984912b386717abb13c08ca388fe8",
+    "source_tree": "208dd2ece9105ffa537cb090bab52807fe454316",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-api-and-automation": {
+    "path": "modules/control-panel-api-and-automation",
+    "reference": "0565500dafd4e33ed27ed45174c6930d1133df17",
+    "repository": "https://github.com/liberusoftware/module-control-panel-api-and-automation",
+    "source_signature": "6a2e1251c5c7a96b47bc39c5b0752e4650189b2d4529762fc5ccee8952dbed04",
+    "source_tree": "293cc747bce370f4b5162b3e43970f50e92ffadf",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-api-and-automation-api": {
+    "path": "modules/control-panel-api-and-automation-api",
+    "reference": "fc711e19d6b4d44d6673bda2b2baf28c0b36de35",
+    "repository": "https://github.com/liberusoftware/module-control-panel-api-and-automation-api",
+    "source_signature": "7bb6a6af4c4a8dd86b03579a9656626c35714fdabf368a69f51616941fa9611a",
+    "source_tree": "684937b8ef2f82e448dd959d34e047ddc9e12be0",
+    "version": "1.0.2"
+  }
+}
