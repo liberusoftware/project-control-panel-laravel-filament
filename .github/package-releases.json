@@ -911,6 +911,14 @@
     "source_tree": "45cff815d82c25c18be6a5959c8ac87cba3fbe65",
     "version": "1.1.0"
   },
+  "liberusoftware/tenancy": {
+    "path": "modules/tenancy",
+    "reference": "5c079502cf9c82c304f37eab141c8c7d5a77b2b7",
+    "repository": "https://github.com/liberusoftware/module-tenancy",
+    "source_signature": "d469d350ee02b7822a5fa89a3d1bcf1bbd06fa4f8e46fc06e6644ffc88c0b8e5",
+    "source_tree": "04f69949afdcdb6c12817d536fee1706df06aa5d",
+    "version": "1.2.2"
+  },
   "liberusoftware/theme-base": {
     "path": "themes/base",
     "reference": "eee9837aa9b87dd99767e63f6890cd393f3aed2b",
@@ -926,6 +934,14 @@
     "source_signature": "d1c433d600b3105e715b6b143d43cc26fef00231ae179e21b009573b05defe13",
     "source_tree": "9f6068f5ca8da1331ceb882ec20fb7b434fefc19",
     "version": "1.10.0"
+  },
+  "liberusoftware/theme-support": {
+    "path": "modules/theme-support",
+    "reference": "2054ff4ca044b5fae23c7d8ad62e30f3103cbcd2",
+    "repository": "https://github.com/liberusoftware/module-theme-support",
+    "source_signature": "30b7fa4a0c18515b3efe01d7d9dabe63b2d2be0b7c6c551149fdd6e7e3977c75",
+    "source_tree": "b86dc53e5391f4ea2c8485db79c0437da049783a",
+    "version": "1.8.2"
   },
   "liberusoftware/theme-support-livewire": {
     "path": "modules/theme-support-livewire",
