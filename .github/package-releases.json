@@ -398,5 +398,405 @@
     "source_signature": "7bb6a6af4c4a8dd86b03579a9656626c35714fdabf368a69f51616941fa9611a",
     "source_tree": "684937b8ef2f82e448dd959d34e047ddc9e12be0",
     "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-api-and-automation-livewire": {
+    "path": "modules/control-panel-api-and-automation-livewire",
+    "reference": "4423181727045f400922a30ab6d40435c1a29a85",
+    "repository": "https://github.com/liberusoftware/module-control-panel-api-and-automation-livewire",
+    "source_signature": "0cf185e3970055ab89bf2e8d01db821d19105c8bfc88d385b1c0f1d9a5777523",
+    "source_tree": "cdd059da153b0201e56ccc9490a32529bb2745a0",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-backups": {
+    "path": "modules/control-panel-backups",
+    "reference": "6cb0ea8facf92150e945f2ae71ee1a02cd89710b",
+    "repository": "https://github.com/liberusoftware/module-control-panel-backups",
+    "source_signature": "e45716f0c77ef28523a303686a8351dd7e830339c4100e3ba281631df74a1508",
+    "source_tree": "828e5dec7d3a945087c3eb8991f3b4116514d98b",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-backups-api": {
+    "path": "modules/control-panel-backups-api",
+    "reference": "203c5977f84f2102c025ca5046960ab9cf23917c",
+    "repository": "https://github.com/liberusoftware/module-control-panel-backups-api",
+    "source_signature": "65a4dfb0112ef1f13e19f6f411ba3ee169de86385ee98d95754477cac86ca2b5",
+    "source_tree": "c5a8c76b161f2ab2510f4fced13c580ebfb8dd8d",
+    "version": "1.0.3"
+  },
+  "liberusoftware/module-control-panel-backups-livewire": {
+    "path": "modules/control-panel-backups-livewire",
+    "reference": "3a9270e8b976db3a0b491b4fb8c3b11506d388a3",
+    "repository": "https://github.com/liberusoftware/module-control-panel-backups-livewire",
+    "source_signature": "858e544216591eaff04ea17a4416724969d3adad9053b199544d278e1ac38ae1",
+    "source_tree": "4404346788fbdf237825673f04d3f72edf898928",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-certificates": {
+    "path": "modules/control-panel-certificates",
+    "reference": "9c6efc6f33ca836e312bb886a5f6e4c5c32e6135",
+    "repository": "https://github.com/liberusoftware/module-control-panel-certificates",
+    "source_signature": "674c88cac28060d67bb77cabd1953c7153bfd8d4f083b3569b0960ac00d9cbbe",
+    "source_tree": "c4ac322e2b43cbdd631fd1b3f8aa8cb5f163e422",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-certificates-api": {
+    "path": "modules/control-panel-certificates-api",
+    "reference": "2b0d242466fe13510aacfef53d838b03e9c19c7f",
+    "repository": "https://github.com/liberusoftware/module-control-panel-certificates-api",
+    "source_signature": "172c980e2a8764a7527fbc962c45d2b93a55bf9299bf2d5893e29938924b217d",
+    "source_tree": "df928d7d1f178d25ff8052a0f9e7c03197a0a769",
+    "version": "1.0.3"
+  },
+  "liberusoftware/module-control-panel-certificates-livewire": {
+    "path": "modules/control-panel-certificates-livewire",
+    "reference": "e0b3896a10b3488e8817b86496299fdf86b4d330",
+    "repository": "https://github.com/liberusoftware/module-control-panel-certificates-livewire",
+    "source_signature": "597bf3691b369b144aade956832662d0069c814c7147337aa36b79e895362f9a",
+    "source_tree": "431f0a6d3358b887234d9cd950ed43a9e53ba82e",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-containers": {
+    "path": "modules/control-panel-containers",
+    "reference": "c04a67e64284eaee1a8bfd892f6150343f76e456",
+    "repository": "https://github.com/liberusoftware/module-control-panel-containers",
+    "source_signature": "1ad29935d51a6df085ef62912b0c04f53ac3b7c76296800d01fd7a16164452db",
+    "source_tree": "a7179bdb8646216257c9e5e0f05886757f8ee3b3",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-containers-api": {
+    "path": "modules/control-panel-containers-api",
+    "reference": "e6d996938505e8db7704daffc9f4f6296657eadd",
+    "repository": "https://github.com/liberusoftware/module-control-panel-containers-api",
+    "source_signature": "fa1dcad033c3b4bcca59577e96cc2010b9b98c1d69c24799af1ef6bf93ed31e7",
+    "source_tree": "815c2bf51f11c64bd0a5168025b2c9bdf5df2795",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-containers-livewire": {
+    "path": "modules/control-panel-containers-livewire",
+    "reference": "1d4aa092382f6ce790422abbcd057534d0b38029",
+    "repository": "https://github.com/liberusoftware/module-control-panel-containers-livewire",
+    "source_signature": "d7cda0a40cee40aecc8cf30a4e6fae1d38c8ca17ca684c85bd6d541db88a706d",
+    "source_tree": "e294bf30e6e154574b82ec8af4b8e23ed2bb3e5a",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-control-core": {
+    "path": "modules/control-panel-control-core",
+    "reference": "36ff4c1e377a956fb4190c6a90eaaa9e51d15f57",
+    "repository": "https://github.com/liberusoftware/module-control-panel-control-core",
+    "source_signature": "66dfeba218c2c3f976e7579a8209ae7a6f2822f2d97f5f2921cdc663a9f4c9e0",
+    "source_tree": "f79266200814bad30bbb92e4b83d177fefdfc5ef",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-control-core-api": {
+    "path": "modules/control-panel-control-core-api",
+    "reference": "79f16e85ec18a04c5bea9658802c5604f4b00bb9",
+    "repository": "https://github.com/liberusoftware/module-control-panel-control-core-api",
+    "source_signature": "83ae9bbd36894dbe981bedc6ae82bedf93a3c45ada000ef0607b633c2d669a3c",
+    "source_tree": "75873406e8e69ba082d3e089e886991fc41c82da",
+    "version": "1.0.3"
+  },
+  "liberusoftware/module-control-panel-control-core-livewire": {
+    "path": "modules/control-panel-control-core-livewire",
+    "reference": "c180ee0aabb6d906b7eb1c36964c6d8a0fad9bb1",
+    "repository": "https://github.com/liberusoftware/module-control-panel-control-core-livewire",
+    "source_signature": "f1a5badacf8f785750a57b2154bf15f15090d4e9cc149ac7f0beeac383daf4b8",
+    "source_tree": "db9f1147b1201aa31f4e3f74964b988165a4eb4f",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-databases": {
+    "path": "modules/control-panel-databases",
+    "reference": "edaa5c4a01fb66e25b9db2d7cf5a07156e77f6e4",
+    "repository": "https://github.com/liberusoftware/module-control-panel-databases",
+    "source_signature": "ab5a72e80397176cb39b74b39d835677b2e7fcf1a695212515e0caaf0b62fd72",
+    "source_tree": "9331675618aa76f95ce692e548652ac317389e8a",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-databases-api": {
+    "path": "modules/control-panel-databases-api",
+    "reference": "0dc296162a77a4b8fc3eccde05e38947f049216f",
+    "repository": "https://github.com/liberusoftware/module-control-panel-databases-api",
+    "source_signature": "f6dccd2771ade551a97b429848e5f70e56338ab984ac86b1338708994a91fc83",
+    "source_tree": "4dab50bb573aa7fd80a8834c3861566899e22df9",
+    "version": "1.0.3"
+  },
+  "liberusoftware/module-control-panel-databases-livewire": {
+    "path": "modules/control-panel-databases-livewire",
+    "reference": "7bc8c0a9e4980a08522c510e4b21a2d15e978b53",
+    "repository": "https://github.com/liberusoftware/module-control-panel-databases-livewire",
+    "source_signature": "f079aee3920eb2434354e82d743c6b292095c1a56c7cb3caba8820400f8b1656",
+    "source_tree": "d76d536206af0d042121ae6b22aa4ae4c464cd52",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-dns": {
+    "path": "modules/control-panel-dns",
+    "reference": "7d495267f6c7fd4ec9a163754d5bdcbf20c5daa1",
+    "repository": "https://github.com/liberusoftware/module-control-panel-dns",
+    "source_signature": "3e912176ae1f68dd99163636bca9a771c4db6b23cb60d73ca41f5c2ba3094b59",
+    "source_tree": "d78b1c88b10b3c6fab74275837e39c8898261908",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-dns-api": {
+    "path": "modules/control-panel-dns-api",
+    "reference": "089186d56231db43159e0027c9ebab3917e55b27",
+    "repository": "https://github.com/liberusoftware/module-control-panel-dns-api",
+    "source_signature": "f6fb007e032c758bcc773b79c3217d733515ee6887e90d3ca5c3e11b24a276ed",
+    "source_tree": "5ddcea5007174ccfa4960f394116411807baffe9",
+    "version": "1.0.3"
+  },
+  "liberusoftware/module-control-panel-dns-livewire": {
+    "path": "modules/control-panel-dns-livewire",
+    "reference": "1924725623bca5a0adb39a706f0dc82371dbc6c0",
+    "repository": "https://github.com/liberusoftware/module-control-panel-dns-livewire",
+    "source_signature": "621ea9c8fd8e910b78e6f2f41867c1a4bb55929174780a9b08ea26699934dea1",
+    "source_tree": "b00fd2549ba34a4335a0397d26f8cd9a19bd21a5",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-files": {
+    "path": "modules/control-panel-files",
+    "reference": "4db1d8c764eb8d33c011e017dd1c689b166f9978",
+    "repository": "https://github.com/liberusoftware/module-control-panel-files",
+    "source_signature": "ee279f80880a4532f3953198fc1dbcd4f5d751f8cb1d6411094908fd9d7ff59f",
+    "source_tree": "e74375f55449962309bc9b16087216cc59134147",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-files-api": {
+    "path": "modules/control-panel-files-api",
+    "reference": "67fbd13da959ad6af767da762c706c84e47fe888",
+    "repository": "https://github.com/liberusoftware/module-control-panel-files-api",
+    "source_signature": "8e99c3f22cf90ae64154a05612a14168d1fdb5bd269a18aa67bcfc37aa94f32a",
+    "source_tree": "4aa8c60bc263d8728c794f2357588d2520ea15b2",
+    "version": "1.0.3"
+  },
+  "liberusoftware/module-control-panel-files-livewire": {
+    "path": "modules/control-panel-files-livewire",
+    "reference": "be425633658c1842b91797579a4d2d8c0a575e87",
+    "repository": "https://github.com/liberusoftware/module-control-panel-files-livewire",
+    "source_signature": "c032f756edd1a74c2b95bedbcc78c14019c2ee0ce2f89311594607f95048fdf7",
+    "source_tree": "16f24aea882f41b2bf0ee3792a19e25c41ca88f6",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-kubernetes": {
+    "path": "modules/control-panel-kubernetes",
+    "reference": "6626f0ede27043ad624bd202b4a95c0323d61eed",
+    "repository": "https://github.com/liberusoftware/module-control-panel-kubernetes",
+    "source_signature": "13a29f41c5dd373d7094da2513b478f6e3cbbb52f7917f82e222c25866acf0c0",
+    "source_tree": "24d2693afc4ebaa56d554f57f3f3444f665d5a69",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-kubernetes-api": {
+    "path": "modules/control-panel-kubernetes-api",
+    "reference": "9429e3f5363e64f9dcf04ef939dd2c7ad958b220",
+    "repository": "https://github.com/liberusoftware/module-control-panel-kubernetes-api",
+    "source_signature": "15050d9ed656fbe52f54ace5035852fd63bd394d6f8cf046c566f892903115ad",
+    "source_tree": "f16212dd1912e6ccd45bda6f11e7519751f5d621",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-kubernetes-livewire": {
+    "path": "modules/control-panel-kubernetes-livewire",
+    "reference": "4880639aed5d80a0746cb1254a6ff76aa756e088",
+    "repository": "https://github.com/liberusoftware/module-control-panel-kubernetes-livewire",
+    "source_signature": "08155c2f29e9d77c0f96256ac2d8a7755183ddf600a33ca6f9f72ab5c0cdfa19",
+    "source_tree": "e6753cf84abc7004114e7181fb40fbaa71d4f6ae",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-mail": {
+    "path": "modules/control-panel-mail",
+    "reference": "d5cf22b0f090788eae1ed5adb05269c4d453b4a9",
+    "repository": "https://github.com/liberusoftware/module-control-panel-mail",
+    "source_signature": "a938cff82720ac2922be39364ee9721c8d4f3c046a81144ff515430b4af8d387",
+    "source_tree": "85fed5aba93117a3b348207fa2e9d2601e9374df",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-mail-api": {
+    "path": "modules/control-panel-mail-api",
+    "reference": "c2badac0dd6ccb4a15a36b8bdfa1db6f3681c72e",
+    "repository": "https://github.com/liberusoftware/module-control-panel-mail-api",
+    "source_signature": "8953a842f52ab9b79a6bf1ffcc9b12930b3f61098e63d5db2d519eb83d5cb2d4",
+    "source_tree": "fae9668cd4c119c57a4eb4e5d99dc3b4c36cc912",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-mail-livewire": {
+    "path": "modules/control-panel-mail-livewire",
+    "reference": "c3ab07b5e8e00cc502d4fafab69750a566a13555",
+    "repository": "https://github.com/liberusoftware/module-control-panel-mail-livewire",
+    "source_signature": "017494b94fa01629bc47ddd02f6782530e83fe7edfe7073d77b9f3521c65f96e",
+    "source_tree": "ca8188a85db67ae5933d2a140e7ef386437ebef7",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-monitoring": {
+    "path": "modules/control-panel-monitoring",
+    "reference": "81c13ae00f1deb5fe1a8af08fc23c5f3bc4e8d19",
+    "repository": "https://github.com/liberusoftware/module-control-panel-monitoring",
+    "source_signature": "fc5cc14bcad08fab2cdbaa37cabf9bea79a52663d5b1adcc2d5d541084c40437",
+    "source_tree": "fa1165d915a5d9ec2128e730409590ae5ea284ee",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-monitoring-api": {
+    "path": "modules/control-panel-monitoring-api",
+    "reference": "3b51c743a76e4dc10a8fe9855e756e177fdc402f",
+    "repository": "https://github.com/liberusoftware/module-control-panel-monitoring-api",
+    "source_signature": "f0f5ae394bed5ad133d51f5f20c06d5dc2e7c15672d990eaba8ca03c56b7cda5",
+    "source_tree": "6f787dc2b20f73421cf7d0509e60106d28497274",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-monitoring-livewire": {
+    "path": "modules/control-panel-monitoring-livewire",
+    "reference": "ebe6b26f33e20d5e405e9cf45d6062e72996d81a",
+    "repository": "https://github.com/liberusoftware/module-control-panel-monitoring-livewire",
+    "source_signature": "ca81bb51061434f6b48500e4b3232aa2dc2a65ec4bd9c5774baa4b9e8fbf78a6",
+    "source_tree": "1018f5596d69c2db26709a6c9a7d4a544f67bc20",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-os-adapters": {
+    "path": "modules/control-panel-os-adapters",
+    "reference": "13853942ec20d1685be00afed6d0e7548ba95258",
+    "repository": "https://github.com/liberusoftware/module-control-panel-os-adapters",
+    "source_signature": "f04211f501b905c74e99daa89f60f2d0d27c88f0cffa43e20db9cc945f0230be",
+    "source_tree": "5cb2deb05f0a1f3d2fac1bceae2cdb7b87be90da",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-os-adapters-api": {
+    "path": "modules/control-panel-os-adapters-api",
+    "reference": "d76d55712322889678f6f4a25a8fc757aadfd183",
+    "repository": "https://github.com/liberusoftware/module-control-panel-os-adapters-api",
+    "source_signature": "fee3c7034f356ce234d74ea618d6797d9b0a7e715be8c4b20532199aedc7d0e3",
+    "source_tree": "b4876f0ae07b48576228c4ef7847c5e58342e383",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-os-adapters-livewire": {
+    "path": "modules/control-panel-os-adapters-livewire",
+    "reference": "1f2a4edbbbfa421349ec0eec8bcd834d9c37e37c",
+    "repository": "https://github.com/liberusoftware/module-control-panel-os-adapters-livewire",
+    "source_signature": "e6165fd3312495f36d56bd440cf6cabe7ec6570dc1f705a7d33bfe275ec3ef21",
+    "source_tree": "b0697cc9fe0385ccbb24cae13622b5084fa66d73",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-security": {
+    "path": "modules/control-panel-security",
+    "reference": "eac38749a292a99601bcdf50eb71dd607a55d587",
+    "repository": "https://github.com/liberusoftware/module-control-panel-security",
+    "source_signature": "f9edc0df7cd115930b72700913982236ebdfff770953518fbca602a835fd4a1b",
+    "source_tree": "eaab2fbf31b6925e5f41c7ea0cf4084a74f477f8",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-security-api": {
+    "path": "modules/control-panel-security-api",
+    "reference": "0e0ef23fd87dc073a8d807c5ecf2afc631eb4d03",
+    "repository": "https://github.com/liberusoftware/module-control-panel-security-api",
+    "source_signature": "b9581c7b91b32e3a34dd72a44d922478bba799acb356e36c7fd6938065a8b73d",
+    "source_tree": "f0a153c6db0a860f75c6913a12020aec82f1dae9",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-security-livewire": {
+    "path": "modules/control-panel-security-livewire",
+    "reference": "6418f5055ab5793cf1e1fef2894a8bcf05da6097",
+    "repository": "https://github.com/liberusoftware/module-control-panel-security-livewire",
+    "source_signature": "9da090a8348811c3f7d0d71964913532cf51b2f07c93d00c5af31af83ffff3f9",
+    "source_tree": "6e473ec477de7227610837e18c11824d55053472",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-web-hosting": {
+    "path": "modules/control-panel-web-hosting",
+    "reference": "0f284c964185bf9490efda955dd8a6c937d1b2e4",
+    "repository": "https://github.com/liberusoftware/module-control-panel-web-hosting",
+    "source_signature": "e21bfdaed1438806e93a689e8e881cbb55988859af1690c7c20b274864f6c423",
+    "source_tree": "cd66ed0020b5b9d141e98bfcb9955b38057d7cd5",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-control-panel-web-hosting-api": {
+    "path": "modules/control-panel-web-hosting-api",
+    "reference": "4a6524d6f5155ae3b5cca6b70a75dad219fddfa6",
+    "repository": "https://github.com/liberusoftware/module-control-panel-web-hosting-api",
+    "source_signature": "3222de8e701fa4716bcd126852949d64ed80493b447d645e7058bd77555b6197",
+    "source_tree": "238e75e1a0eb604c375b0f92e5ad4a60018c7827",
+    "version": "1.0.3"
+  },
+  "liberusoftware/module-control-panel-web-hosting-livewire": {
+    "path": "modules/control-panel-web-hosting-livewire",
+    "reference": "420b3bea66765d6e204b079b145d1cf50263cac2",
+    "repository": "https://github.com/liberusoftware/module-control-panel-web-hosting-livewire",
+    "source_signature": "883e9f37c2eee6b24840389493692b5bde2f090cefdaf9b16ce09f2b483ebd9a",
+    "source_tree": "74dfec3626c623d549b525c7c3e5504bdf265e54",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-manager-api": {
+    "path": "modules/module-manager-api",
+    "reference": "7d0409d833ab5194820c35e5a7c85d808a0a3133",
+    "repository": "https://github.com/liberusoftware/module-module-manager-api",
+    "source_signature": "30b1de8723ca1087bf729c7010bfca110026871fa2da51fc1ad9deb5f5d0ccdd",
+    "source_tree": "03847bbd067fc78503115e97a2bc4f9cb7df9f61",
+    "version": "1.0.2"
+  },
+  "liberusoftware/module-manager-livewire": {
+    "path": "modules/module-manager-livewire",
+    "reference": "355f4383034793dce4f9892eb2ae9ad919eb8f83",
+    "repository": "https://github.com/liberusoftware/module-module-manager-livewire",
+    "source_signature": "eacf572f1354b97e175a324c1981aefe2f59750179cbe1463b1adff8a3d89034",
+    "source_tree": "22d64487dacf9c932d0ae020f837c253f4b0c20e",
+    "version": "1.0.3"
+  },
+  "liberusoftware/notifications": {
+    "path": "modules/notifications",
+    "reference": "b187fa63ac3f31d4ddc2aa6f1105e39d01e76f7d",
+    "repository": "https://github.com/liberusoftware/module-notifications",
+    "source_signature": "26d30f6bf7796d81f1a460eb1500deb4422128305982c2ae3f8e00de1020bc51",
+    "source_tree": "d637718847638a111ca69e2d302105859d156430",
+    "version": "1.5.1"
+  },
+  "liberusoftware/notifications-api": {
+    "path": "modules/notifications-api",
+    "reference": "1838732318b953fa74c9f907960e005ddc0876b0",
+    "repository": "https://github.com/liberusoftware/module-notifications-api",
+    "source_signature": "02bd0b561259578d12e0f80a5831eb1e7eeecb152e60560595ece9a097f2d269",
+    "source_tree": "b4f1467323677f5c1d606d5ce2b874e5cdec6a8b",
+    "version": "1.0.2"
+  },
+  "liberusoftware/notifications-livewire": {
+    "path": "modules/notifications-livewire",
+    "reference": "94fea67c0b968972a9ac24f0a637ede2cbf50fef",
+    "repository": "https://github.com/liberusoftware/module-notifications-livewire",
+    "source_signature": "d9613a5dfa2edc7709b62f7f3324f3b0b645b47447b66b29034dcd24276b5681",
+    "source_tree": "3412c5775a2e45cb86d03f0249e13151e3e59931",
+    "version": "1.0.3"
+  },
+  "liberusoftware/observability": {
+    "path": "modules/observability",
+    "reference": "093591947f97d89016572c3642166b491d028dd2",
+    "repository": "https://github.com/liberusoftware/module-observability",
+    "source_signature": "7acacba40e9dfdf4285cb9e81761e27acb60387e99c9ecd3bfc8b0e8d2bede5d",
+    "source_tree": "482399ca144d874b9e260ef5a0e265a0d809d00f",
+    "version": "1.4.7"
+  },
+  "liberusoftware/observability-api": {
+    "path": "modules/observability-api",
+    "reference": "69c7e5f99f3bace70ebda990cba869ce2e4e8ad6",
+    "repository": "https://github.com/liberusoftware/module-observability-api",
+    "source_signature": "fc545dfaa3c60ccaaf624118773945e7f1ac13451a3093abcd32658e7d04a5ab",
+    "source_tree": "4b654fbb05285b5f2ff4543c6097e625fc22feb0",
+    "version": "1.0.2"
+  },
+  "liberusoftware/observability-livewire": {
+    "path": "modules/observability-livewire",
+    "reference": "6e5732dd553695231befd963ae38eadc6a63d0df",
+    "repository": "https://github.com/liberusoftware/module-observability-livewire",
+    "source_signature": "beeb5e5dffea74f5dfc9447a773e2185996acc659383247fd9dc2489862eee0a",
+    "source_tree": "2431842616180a65d345414cc65aebc674496b5d",
+    "version": "1.0.3"
+  },
+  "liberusoftware/organizations-teams-api": {
+    "path": "modules/organizations-teams-api",
+    "reference": "9e2e29ef876ba6b38dd9ab2e22eb2887768b213c",
+    "repository": "https://github.com/liberusoftware/module-organizations-teams-api",
+    "source_signature": "63fee8e76eaa46922b1eb89573e826e4ebd3b9bcfa09bf9ffaa77935267030b0",
+    "source_tree": "c082c0c5a5b345c842dfb2460a1639f3ab1d4b2a",
+    "version": "1.0.2"
+  },
+  "liberusoftware/organizations-teams-livewire": {
+    "path": "modules/organizations-teams-livewire",
+    "reference": "ed327194fb82f2473f7dfacf9233168be6444d55",
+    "repository": "https://github.com/liberusoftware/module-organizations-teams-livewire",
+    "source_signature": "4601a20035f8d8813a9719eb83d04c04ced320887d663dcdd01c98e6c87823e4",
+    "source_tree": "2c3f0c46f41c91555a018c59ee94678595f42686",
+    "version": "1.0.3"
   }
 }
