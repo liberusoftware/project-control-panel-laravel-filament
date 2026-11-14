@@ -3,11 +3,27 @@
   "name": "control-panel-certificates-livewire",
   "display_name": "Control Panel Certificates Livewire",
   "description": "Livewire certificate inventory for the control panel.",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "category": "presentation",
   "provider": "Liberu\\ControlPanel\\CertificatesLivewire\\CertificatesLivewireServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-control-panel-certificates": "^1.0"}},
-  "capabilities": ["control-panel.certificates.livewire"],
-  "features": ["ACME account inventory", "Certificate inventory", "Issuance state", "Deployment state", "Renewal state", "Revocation state", "Expiry monitoring"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-control-panel-certificates": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.certificates.livewire"
+  ],
+  "features": [
+    "ACME account inventory",
+    "Certificate inventory",
+    "Issuance state",
+    "Deployment state",
+    "Renewal state",
+    "Revocation state",
+    "Expiry monitoring"
+  ],
   "default_enabled": false
 }

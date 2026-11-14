@@ -3,11 +3,27 @@
   "name": "control-panel-files-livewire",
   "display_name": "Control Panel Files Livewire",
   "description": "Livewire file inventory for the control panel.",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "category": "presentation",
   "provider": "Liberu\\ControlPanel\\FilesLivewire\\FilesLivewireServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-control-panel-files": "^1.0"}},
-  "capabilities": ["control-panel.files.livewire"],
-  "features": ["Home directory inventory", "Permission state", "SFTP inventory", "File operation state", "Quota state", "Scanning state", "Retention state"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-control-panel-files": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.files.livewire"
+  ],
+  "features": [
+    "Home directory inventory",
+    "Permission state",
+    "SFTP inventory",
+    "File operation state",
+    "Quota state",
+    "Scanning state",
+    "Retention state"
+  ],
   "default_enabled": false
 }

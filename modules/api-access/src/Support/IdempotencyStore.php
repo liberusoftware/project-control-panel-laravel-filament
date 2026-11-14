@@ -62,6 +62,10 @@ final class IdempotencyStore
                 throw new RuntimeException('Idempotency key was reused with a different request.');
             }
 
+            if ($created === null) {
+                throw new RuntimeException('Idempotency request could not be reserved.');
+            }
+
             return $created;
         });
     }
@@ -72,5 +76,13 @@ final class IdempotencyStore
             ->where('identity_ref', $identity)
             ->where('key', $key)
             ->update(['response_status' => $status, 'response_body' => $body, 'updated_at' => now()]);
+    }
+
+    public function forget(string $identity, string $key): void
+    {
+        DB::table('api_idempotency_keys')
+            ->where('identity_ref', $identity)
+            ->where('key', $key)
+            ->delete();
     }
 }

@@ -3,11 +3,27 @@
   "name": "control-panel-backups-filament",
   "display_name": "Control Panel Backups Filament",
   "description": "Filament panel boundary for backup administration.",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "category": "presentation",
   "provider": "Liberu\\ControlPanel\\BackupsFilament\\BackupsFilamentServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-control-panel-backups": "^1.0"}},
-  "capabilities": ["control-panel.backups.filament"],
-  "features": ["Policies", "Snapshots", "Destinations", "Schedules", "Restore", "Verification", "Retention"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-control-panel-backups": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.backups.filament"
+  ],
+  "features": [
+    "Policies",
+    "Snapshots",
+    "Destinations",
+    "Schedules",
+    "Restore",
+    "Verification",
+    "Retention"
+  ],
   "default_enabled": false
 }

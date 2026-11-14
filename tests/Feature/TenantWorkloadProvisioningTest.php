@@ -1,12 +1,17 @@
 <?php
 
+use App\Console\Commands\DeployTenantWorkload;
 use App\Hosting\Kubernetes\KubernetesProvisioner;
 use App\Hosting\Kubernetes\TenantWorkloadPlan;
 use Illuminate\Cache\ArrayStore;
 use Illuminate\Cache\Repository;
+use Illuminate\Container\Container;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Liberu\ControlPanel\ControlCore\Actions\WriteAuditEntry;
 use Liberu\ControlPanel\ControlCore\ControlCoreServiceProvider;
 use Liberu\ControlPanel\ControlCore\Models\AuditEntry;
 use Liberu\ControlPanel\Kubernetes\Actions\ArchiveCluster;
@@ -416,4 +421,73 @@ it('rejects a release override outside this workload allowlist before contacting
     config(['hosting-kubernetes.sources.test.settings' => [...$this->settings, 'storage_gi' => 2, 'storage_class' => 'durable', 'allowed_data_releases' => []]]);
     $this->artisan('hosting:deploy-workload', ['source' => 'test', '--release' => 'releases/'.str_repeat('c', 64).'/public'])->assertFailed();
     Http::assertNothingSent();
+});
+
+it('requires an installed workload owner before provisioning', function (): void {
+    $original = Container::getInstance();
+    $provisioner = app(KubernetesProvisioner::class);
+    $audit = app(WriteAuditEntry::class);
+    $command = Mockery::mock(DeployTenantWorkload::class)->makePartial();
+    $command->shouldReceive('error')->once()->with('Enable the Kubernetes and control-core modules before provisioning workloads.');
+    try {
+        Container::setInstance(new Application(dirname(__DIR__, 2)));
+        expect($command->handle($provisioner, $audit))->toBe(1);
+    } finally {
+        Container::setInstance($original);
+    }
+    Http::assertNothingSent();
+});
+
+it('rejects incomplete source settings and local locking before provisioning', function (string $fault): void {
+    if ($fault === 'source') {
+        config(['hosting-kubernetes.sources.test.settings' => null]);
+    } else {
+        config(['cache.default' => 'file']);
+    }
+    $this->artisan('hosting:deploy-workload test')->assertFailed();
+    Http::assertNothingSent();
+})->with(['source', 'cache']);
+
+it('does not replace another operator workload lock', function (): void {
+    $key = 'hosting:workload:'.hash('sha256', $this->cluster->getKey().':'.$this->workload->getKey());
+    $lock = Cache::lock($key, 600);
+    expect($lock->get())->toBeTrue();
+    try {
+        $this->artisan('hosting:deploy-workload test')->assertFailed()->expectsOutput('This workload is already being provisioned.');
+        expect($lock->isOwnedByCurrentProcess())->toBeTrue();
+        Http::assertNothingSent();
+    } finally {
+        $lock->release();
+    }
+});
+
+it('records read-only workload command preflight without applying resources', function (): void {
+    $this->artisan('hosting:deploy-workload test --dry-run')->assertSuccessful();
+    $entry = AuditEntry::query()->where('event', 'hosting.workload.provisioned')->firstOrFail();
+    expect($entry->context)->toMatchArray(['dry_run' => true, 'ready' => false, 'inventory_unchanged' => true])
+        ->and($this->remote)->toBe([]);
+    Http::assertNotSent(fn (Request $request): bool => $request->method() !== 'GET');
+});
+
+it('still reports provisioning failure when the audit store is unavailable', function (): void {
+    $this->conflictKind = 'NetworkPolicy';
+    DB::unprepared("CREATE TRIGGER reject_workload_audit BEFORE INSERT ON control_panel_audit_entries BEGIN SELECT RAISE(ABORT, 'private audit storage error'); END");
+    try {
+        $this->artisan('hosting:deploy-workload test')->assertFailed()
+            ->expectsOutput('The failure could not be persisted to the audit log.')
+            ->expectsOutput('Workload provisioning failed. Inspect ownership, API permissions, sandbox availability and partial namespace state. Existing data was not deleted.');
+    } finally {
+        DB::unprepared('DROP TRIGGER reject_workload_audit');
+    }
+    expect(AuditEntry::query()->count())->toBe(0);
+});
+
+it('spreads scaled tenant replicas across independent nodes', function (): void {
+    $plan = app(TenantWorkloadPlan::class)->build('team-a', $this->workload->getKey(), $this->image,
+        [...$this->settings, 'replicas' => 2, 'max_replicas' => 3]);
+    $deployment = collect($plan)->firstWhere('body.kind', 'Deployment')['body'];
+    $spread = $deployment['spec']['template']['spec']['topologySpreadConstraints'][0];
+    expect($deployment['spec']['replicas'])->toBe(2)
+        ->and($spread)->toMatchArray(['maxSkew' => 1, 'minDomains' => 2, 'topologyKey' => 'kubernetes.io/hostname', 'whenUnsatisfiable' => 'DoNotSchedule'])
+        ->and($spread['labelSelector']['matchLabels'])->toBe($deployment['spec']['selector']['matchLabels']);
 });

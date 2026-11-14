@@ -1,11 +1,16 @@
 <?php
 
+use App\Console\Commands\InspectHostingMigrationSource;
+use App\Hosting\Migrations\VirtualminSource;
+use Illuminate\Container\Container;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 use Liberu\ControlPanel\ControlCore\Actions\RegisterNode;
 use Liberu\ControlPanel\ControlCore\Actions\RegisterNodeCredential;
 use Liberu\ControlPanel\ControlCore\Actions\RevokeNodeCredential;
 use Liberu\ControlPanel\ControlCore\Actions\UpdateNodeCredential;
+use Liberu\ControlPanel\ControlCore\Actions\WriteAuditEntry;
 use Liberu\ControlPanel\ControlCore\ControlCoreServiceProvider;
 use Liberu\ControlPanel\ControlCore\Enums\CredentialStatus;
 use Liberu\ControlPanel\ControlCore\Models\AuditEntry;
@@ -139,4 +144,59 @@ it('does not accept a credential revoked while source inspection is running', fu
     };
     $this->artisan('hosting:inspect-migration-source legacy')->assertFailed();
     expect(AuditEntry::query()->where('event', 'hosting.migration-source.inspected')->exists())->toBeFalse();
+});
+
+it('requires installed migration owner modules before reading source credentials', function (): void {
+    $original = Container::getInstance();
+    $source = app(VirtualminSource::class);
+    $audit = app(WriteAuditEntry::class);
+    $command = Mockery::mock(InspectHostingMigrationSource::class)->makePartial();
+    $command->shouldReceive('error')->once()->with('Enable Kubernetes and control-core before inspecting migration sources.');
+    try {
+        Container::setInstance(new Application(dirname(__DIR__, 2)));
+        expect($command->handle($source, $audit))->toBe(1);
+    } finally {
+        Container::setInstance($original);
+    }
+    Http::assertNothingSent();
+});
+
+it('rejects a credential file changed while inventory is being read', function (): void {
+    $this->afterSourceRequest = function (): void {
+        file_put_contents($this->credentialFile, json_encode(['username' => 'root', 'password' => 'replacement-private-password'], JSON_THROW_ON_ERROR));
+    };
+    $this->artisan('hosting:inspect-migration-source legacy')->assertFailed()
+        ->expectsOutput('Source credentials changed during inspection. Review the binding and rerun.');
+    expect(AuditEntry::query()->where('event', 'hosting.migration-source.inspected')->exists())->toBeFalse();
+});
+
+it('rejects destination lifecycle changes during source inspection', function (): void {
+    $this->afterSourceRequest = function (): void {
+        if ($this->cluster->fresh()->getAttribute('status') === 'pending') {
+            app(SuspendCluster::class)->execute($this->cluster);
+        }
+    };
+    $this->artisan('hosting:inspect-migration-source legacy')->assertFailed()
+        ->expectsOutput('Target ownership or endpoint changed during inspection. Review the source binding and rerun.');
+    expect(AuditEntry::query()->where('event', 'hosting.migration-source.inspected')->exists())->toBeFalse();
+});
+
+it('requires exactly one credential binding', function (bool $both): void {
+    if ($both) {
+        bindStoredSourceCredential($this);
+        config(['hosting-migrations.sources.legacy.credentials_file' => $this->credentialFile]);
+    } else {
+        config(['hosting-migrations.sources.legacy.credentials_file' => null]);
+    }
+    $this->artisan('hosting:inspect-migration-source legacy')->assertFailed()
+        ->expectsOutput('Choose exactly one protected credential file or team-owned node/credential binding.');
+    Http::assertNothingSent();
+})->with([true, false]);
+
+it('requires a username on the encrypted source API credential', function (): void {
+    $credential = bindStoredSourceCredential($this);
+    $credential->forceFill(['username' => null])->save();
+    $this->artisan('hosting:inspect-migration-source legacy')->assertFailed()
+        ->expectsOutput('The source API credential requires a username and encrypted password.');
+    Http::assertNothingSent();
 });

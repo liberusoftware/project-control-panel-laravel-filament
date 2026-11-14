@@ -3,11 +3,27 @@
   "name": "control-panel-databases-api",
   "display_name": "Control Panel Databases API",
   "description": "Authenticated HTTP transport for database lifecycle operations.",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "category": "presentation",
   "provider": "Liberu\\ControlPanel\\DatabasesApi\\DatabasesApiServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-control-panel-databases": "^1.0"}},
-  "capabilities": ["control-panel.databases.api"],
-  "features": ["Database listing", "Database registration", "Users and privileges", "Backups", "Upgrades", "Health checks", "Remote access"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-control-panel-databases": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.databases.api"
+  ],
+  "features": [
+    "Database listing",
+    "Database registration",
+    "Users and privileges",
+    "Backups",
+    "Upgrades",
+    "Health checks",
+    "Remote access"
+  ],
   "default_enabled": false
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Hosting\Migrations\VirtualminSource;
+use Illuminate\Http\Client\Factory;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -13,8 +14,11 @@ beforeEach(function (): void {
         'password' => ['private-source-password'], 'hashed_password' => ['private-password-hash'],
     ]]];
     $this->apiFailure = false;
+    $this->requestOptions = [];
     Http::preventStrayRequests();
-    Http::fake(function (Request $request) {
+    Http::fake(function (Request $request, array $options) {
+        $this->requestOptions[] = $options;
+        ($options['progress'])(0, 0);
         expect($request->method())->toBe('POST')->and($request->url())->toBe('https://source.example.test:10000/virtual-server/remote.cgi');
         expect($request->header('Authorization'))->toBe(['Basic '.base64_encode('root:private-api-password')]);
         if ($this->apiFailure) {
@@ -133,4 +137,66 @@ it('sanitizes connection failures without retaining the upstream exception chain
     } catch (RuntimeException $exception) {
         expect($exception->getMessage())->not->toContain('private-api-password')->and($exception->getPrevious())->toBeNull();
     }
+});
+
+it('requires a readable explicitly configured source CA', function (): void {
+    $this->connection['ca_certificate'] = '/nonexistent/source-ca.pem';
+    expect(fn () => app(VirtualminSource::class)->inspect($this->connection, ['example.test']))
+        ->toThrow(InvalidArgumentException::class, 'readable source CA certificate');
+    Http::assertNothingSent();
+});
+
+it('uses the configured CA bundle for every source request', function (): void {
+    $ca = tempnam(sys_get_temp_dir(), 'virtualmin-ca-');
+    file_put_contents($ca, 'fixture-ca');
+    $this->connection['ca_certificate'] = $ca;
+    try {
+        expect(app(VirtualminSource::class)->inspect($this->connection, ['example.test'])['domains'])->toHaveCount(1);
+        expect(array_column($this->requestOptions, 'verify'))->toBe([$ca, $ca]);
+    } finally {
+        unlink($ca);
+    }
+});
+
+it('rejects malformed inventory collections and feature identifiers', function (string $fault): void {
+    match ($fault) {
+        'non-list rows' => $this->rows = ['domain' => $this->rows[0]],
+        'invalid row' => $this->rows = [['name' => 'example.test', 'values' => null]],
+        'invalid feature' => $this->rows[0]['values']['features'] = ['web private/unsafe'],
+    };
+    expect(fn () => app(VirtualminSource::class)->inspect($this->connection, ['example.test']))->toThrow(RuntimeException::class);
+})->with(['non-list rows', 'invalid row', 'invalid feature']);
+
+it('accepts missing optional feature fields and resolves acyclic parent dependencies', function (): void {
+    unset($this->rows[0]['values']['features'], $this->rows[0]['values']['plugins']);
+    $child = $this->rows[0];
+    $child['name'] = 'child.example.test';
+    $child['values']['id'] = ['2234567890'];
+    $child['values']['type'] = ['Sub-server'];
+    $child['values']['parent_domain'] = ['example.test'];
+    array_unshift($this->rows, $child);
+
+    $result = app(VirtualminSource::class)->inspect($this->connection, ['*']);
+    expect(array_column($result['domains'], 'domain'))->toBe(['child.example.test', 'example.test'])
+        ->and($result['domains'][0]['parent'])->toBe('example.test')
+        ->and($result['domains'][0]['features'])->toBe([])
+        ->and($result['domains'][1]['plugins'])->toBe([]);
+});
+
+it('stops inventory downloads that exceed the streaming byte limit', function (): void {
+    $http = new Factory();
+    $http->preventStrayRequests();
+    $limitFailure = null;
+    $http->fake(static function (Request $request, array $options) use (&$limitFailure): never {
+        try {
+            ($options['progress'])(9 * 1024 * 1024, 9 * 1024 * 1024);
+        } catch (RuntimeException $exception) {
+            $limitFailure = $exception->getMessage();
+            throw $exception;
+        }
+        throw new LogicException('The streaming limit did not stop the request.');
+    });
+    expect(fn () => (new VirtualminSource($http))->inspect($this->connection, ['example.test']))
+        ->toThrow(RuntimeException::class, 'Source inventory connection failed. Verify source TLS, authentication and connectivity.');
+    expect($limitFailure)->toBe('Source inventory exceeds the bounded response size.');
 });

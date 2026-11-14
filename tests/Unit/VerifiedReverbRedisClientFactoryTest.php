@@ -1,6 +1,7 @@
 <?php
 
 use App\Hosting\Kubernetes\VerifiedReverbRedisClientFactory;
+use Clue\React\Redis\Client;
 use Illuminate\Config\Repository;
 use Illuminate\Filesystem\Filesystem;
 use Laravel\Reverb\Servers\Reverb\Publishing\RedisClientFactory;
@@ -94,4 +95,63 @@ it('refuses plaintext endpoints before sending any Redis credentials when TLS is
     $config = new Repository(['reverb' => ['servers' => ['reverb' => ['scaling' => ['server' => ['scheme' => 'tls']]]]]]);
     $factory = new VerifiedReverbRedisClientFactory($config);
     expect(fn () => $factory->make(new StreamSelectLoop(), 'redis://localhost:6379?password=private-test-password'))->toThrow(RuntimeException::class);
+});
+
+it('rejects incomplete TLS trust and ACL configuration before connecting', function (mixed $ca, string $query, string $message): void {
+    $config = new Repository([
+        'reverb' => ['servers' => ['reverb' => ['scaling' => ['server' => ['scheme' => 'tls']]]]],
+        'database' => ['redis' => ['default' => ['context' => ['ssl' => ['cafile' => $ca === 'fixture' ? $this->workspace.'/server.pem' : $ca]]]]],
+    ]);
+
+    expect(fn () => (new VerifiedReverbRedisClientFactory($config))->make(new StreamSelectLoop(), 'rediss://localhost:6379?'.$query))
+        ->toThrow(RuntimeException::class, $message);
+})->with([
+    'missing trust' => [null, 'password=secret', 'readable trusted CA bundle'],
+    'empty trust' => ['', 'password=secret', 'readable trusted CA bundle'],
+    'non-string trust' => [[], 'password=secret', 'readable trusted CA bundle'],
+    'unreadable trust' => ['/nonexistent/reverb-ca.pem', 'password=secret', 'readable trusted CA bundle'],
+    'missing password' => ['fixture', '', 'Redis ACL credentials'],
+    'empty password' => ['fixture', 'password=', 'Redis ACL credentials'],
+    'array password' => ['fixture', 'password[]=secret', 'Redis ACL credentials'],
+    'array username' => ['fixture', 'username[]=operator&password=secret', 'Redis ACL credentials'],
+    'negative database' => ['fixture', 'password=secret&db=-1', 'database index is invalid'],
+    'text database' => ['fixture', 'password=secret&db=primary', 'database index is invalid'],
+    'array database' => ['fixture', 'password=secret&db[]=1', 'database index is invalid'],
+]);
+
+it('preserves the standard Redis connection when TLS scaling is disabled', function (): void {
+    $loop = new StreamSelectLoop();
+    $server = new TcpServer('127.0.0.1:0', $loop);
+    $connections = [];
+    $server->on('connection', static function (ConnectionInterface $connection) use (&$connections): void {
+        $connections[] = $connection;
+    });
+    $client = null;
+    $failure = null;
+    $timer = $loop->addTimer(5, static function () use ($loop, &$failure): void {
+        $failure = new RuntimeException('Local Redis connection did not finish.');
+        $loop->stop();
+    });
+
+    try {
+        (new VerifiedReverbRedisClientFactory(new Repository()))->make($loop, str_replace('tcp://', 'redis://', $server->getAddress()))->then(
+            static function (Client $connected) use (&$client, $loop): void {
+                $client = $connected;
+                $loop->stop();
+            },
+            static function (Throwable $exception) use (&$failure, $loop): void {
+                $failure = $exception;
+                $loop->stop();
+            },
+        );
+        $loop->run();
+        expect($failure)->toBeNull()->and($client)->toBeInstanceOf(Client::class);
+    } finally {
+        $loop->cancelTimer($timer);
+        $client?->close();
+        foreach ($connections as $connection) {
+            $connection->close();
+        }
+        $server->close();
+    }
 });

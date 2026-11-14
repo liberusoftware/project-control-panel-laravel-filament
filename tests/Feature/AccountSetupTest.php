@@ -7,6 +7,7 @@ use App\Settings\TeamSetupDefinition;
 use Filament\Facades\Filament;
 use Illuminate\Support\Facades\DB;
 use Liberu\Foundation\Organizations\Models\Team;
+use Liberu\Foundation\Organizations\Services\CurrentTeamResolver;
 use Liberu\Foundation\Settings\Services\ScopedSettings;
 use Livewire\Features\SupportLockedProperties\CannotUpdateLockedPropertyException;
 use Livewire\Livewire;
@@ -194,7 +195,10 @@ it('does not offer owner-only setup to other team members', function (): void {
     $team->users()->attach($member, ['role' => 'admin', 'status' => 'active']);
     $this->actingAs($member);
     expect(AccountSetupWidget::canView())->toBeFalse();
-    Livewire::test(AccountSetupWidget::class)->assertSet('needsSetup', false);
+    $widget = new AccountSetupWidget();
+    $widget->mount(app(CurrentTeamResolver::class), app(ScopedSettings::class));
+    expect($widget->needsSetup)->toBeFalse();
+    Livewire::withoutLazyLoading()->test(AccountSetupWidget::class)->assertSet('needsSetup', false);
 });
 
 it('rolls back scoped settings if updating the team profile fails', function (): void {
@@ -223,4 +227,27 @@ it('resolves credential badges once per render rather than once per provider', f
     DB::disableQueryLog();
 
     expect($reads)->toHaveCount(2);
+});
+
+it('ignores out-of-range setup navigation without changing saved progress', function (int $step): void {
+    [$user, $team] = setupOwner();
+    Livewire::actingAs($user)->test(AccountSetup::class)->call('saveProfile')
+        ->call('goToStep', $step)->assertSet('step', 2)->assertSet('completedSteps', [1]);
+    expect(app(ScopedSettings::class)->resolve('team.setup', ['team' => $team->getKey()])['completed_steps'])->toBe([1]);
+})->with([0, 4]);
+
+it('links the owner setup reminder to the app wizard', function (): void {
+    [$user] = setupOwner();
+    $component = Livewire::actingAs($user)->test(AccountSetupWidget::class)
+        ->assertSet('needsSetup', true)->assertSee(AccountSetup::getUrl(panel: 'app'));
+    expect($component->instance()->setupUrl())->toBe(AccountSetup::getUrl(panel: 'app'));
+});
+
+it('keeps the owner setup reminder inactive for guests', function (): void {
+    auth()->logout();
+    expect(AccountSetupWidget::canView())->toBeFalse();
+    $widget = new AccountSetupWidget();
+    $widget->mount(app(CurrentTeamResolver::class), app(ScopedSettings::class));
+    expect($widget->needsSetup)->toBeFalse();
+    Livewire::withoutLazyLoading()->test(AccountSetupWidget::class)->assertSet('needsSetup', false);
 });

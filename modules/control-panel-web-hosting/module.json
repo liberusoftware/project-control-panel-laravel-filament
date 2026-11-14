@@ -3,15 +3,19 @@
   "name": "control-panel-web-hosting",
   "display_name": "Control Panel Web Hosting",
   "description": "Domains, virtual hosts, runtimes, SSL, redirects, logs, and applications.",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "category": "capability",
   "provider": "Liberu\\ControlPanel\\WebHosting\\WebHostingServiceProvider",
   "requires": {
     "php": "^8.5",
     "laravel": "^13.0",
-    "packages": {"liberusoftware/module-manager": "^1.0"}
+    "packages": {
+      "liberusoftware/module-manager": "^1.0"
+    }
   },
-  "capabilities": ["control-panel.web-hosting"],
+  "capabilities": [
+    "control-panel.web-hosting"
+  ],
   "features": [
     "Domain lifecycle and validation",
     "Virtual host desired state",

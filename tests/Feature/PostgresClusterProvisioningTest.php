@@ -1,12 +1,17 @@
 <?php
 
+use App\Console\Commands\DeployDataCluster;
 use App\Hosting\Kubernetes\DataClusterPlan;
 use App\Hosting\Kubernetes\KubernetesProvisioner;
 use Illuminate\Cache\ArrayStore;
 use Illuminate\Cache\Repository;
+use Illuminate\Container\Container;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Liberu\ControlPanel\ControlCore\Actions\WriteAuditEntry;
 use Liberu\ControlPanel\ControlCore\ControlCoreServiceProvider;
 use Liberu\ControlPanel\ControlCore\Models\AuditEntry;
 use Liberu\ControlPanel\Databases\Actions\CreateDatabase;
@@ -44,6 +49,8 @@ beforeEach(function (): void {
     $this->ready = true;
     $this->onDataApplied = null;
     $this->stale = false;
+    $this->redisReadFault = null;
+    $this->dataReadDrift = false;
     Http::preventStrayRequests();
     Http::fake(function (Request $request) {
         $path = parse_url($request->url(), PHP_URL_PATH);
@@ -51,12 +58,27 @@ beforeEach(function (): void {
             return $this->operatorAvailable ? Http::response(['resources' => [['kind' => 'Cluster'], ['kind' => 'RedisCluster'], ['kind' => 'ValkeyCluster']]]) : Http::response([], 404);
         }
         if (str_contains($path, '/statefulsets/app-')) {
+            if ($this->redisReadFault === 'missing statefulset') {
+                return Http::response([], 404);
+            }
+
             return Http::response(['metadata' => ['generation' => 2, 'ownerReferences' => [['uid' => 'cluster-uid']]],
                 'spec' => ['replicas' => 3, 'template' => ['spec' => ['containers' => [['image' => $this->image]]]]],
                 'status' => ['observedGeneration' => $this->stale ? 1 : 2, 'readyReplicas' => 3, 'updatedReplicas' => 3, 'currentRevision' => 'revision-2', 'updateRevision' => 'revision-2']]);
         }
         if ($request->method() === 'GET') {
-            return isset($this->remote[$path]) ? Http::response($this->remote[$path]) : Http::response([], 404);
+            if (! isset($this->remote[$path])) {
+                return Http::response([], 404);
+            }
+            $body = $this->remote[$path];
+            if ($body['kind'] === 'RedisCluster' && $this->redisReadFault === 'missing uid') {
+                unset($body['metadata']['uid']);
+            }
+            if ($body['kind'] === 'Cluster' && $this->dataReadDrift) {
+                $body['spec']['instances'] = 4;
+            }
+
+            return Http::response($body);
         }
         $body = json_decode($request->body(), true, flags: JSON_THROW_ON_ERROR);
         if ($body['kind'] === 'Namespace' && $request->method() === 'POST') {
@@ -176,3 +198,91 @@ it('does not report readiness after the database engine or cluster changes durin
     $audit = AuditEntry::query()->where('event', 'hosting.data-cluster.provisioned')->firstOrFail();
     expect($audit->getAttribute('context'))->toMatchArray(['ready' => false, 'inventory_unchanged' => false]);
 })->with(['cluster', 'engine']);
+
+it('requires installed database owner modules before provisioning', function (): void {
+    $original = Container::getInstance();
+    $provisioner = app(KubernetesProvisioner::class);
+    $audit = app(WriteAuditEntry::class);
+    $command = Mockery::mock(DeployDataCluster::class)->makePartial();
+    $command->shouldReceive('error')->once()->with('Enable the Kubernetes, databases and control-core modules before provisioning database clusters.');
+    try {
+        Container::setInstance(new Application(dirname(__DIR__, 2)));
+        expect($command->handle($provisioner, $audit))->toBe(1);
+    } finally {
+        Container::setInstance($original);
+    }
+    Http::assertNothingSent();
+});
+
+it('rejects incomplete database sources and local locking before API requests', function (string $fault): void {
+    if ($fault === 'source') {
+        config(['hosting-kubernetes.data_sources.fixture.settings' => null]);
+    } else {
+        config(['cache.default' => 'file']);
+    }
+    $this->artisan('hosting:deploy-data-cluster fixture')->assertFailed();
+    Http::assertNothingSent();
+})->with(['source', 'cache']);
+
+it('preserves the competing database provisioning lock', function (): void {
+    $key = 'hosting:data-cluster:'.hash('sha256', $this->cluster->getKey().':'.$this->database->getKey());
+    $lock = Cache::lock($key, 600);
+    expect($lock->get())->toBeTrue();
+    try {
+        $this->artisan('hosting:deploy-data-cluster fixture')->assertFailed()->expectsOutput('This database cluster is already being provisioned.');
+        expect($lock->isOwnedByCurrentProcess())->toBeTrue();
+        Http::assertNothingSent();
+    } finally {
+        $lock->release();
+    }
+});
+
+it('records read-only data command preflight for the PostgreSQL driver alias', function (): void {
+    $this->engine->forceFill(['driver' => 'pgsql'])->save();
+    $this->artisan('hosting:deploy-data-cluster fixture --dry-run')->assertSuccessful();
+    $entry = AuditEntry::query()->where('event', 'hosting.data-cluster.provisioned')->firstOrFail();
+    expect($entry->context)->toMatchArray(['dry_run' => true, 'ready' => false, 'inventory_unchanged' => true, 'driver' => 'postgresql'])
+        ->and($this->remote)->toBe([]);
+    Http::assertNotSent(fn (Request $request): bool => $request->method() !== 'GET');
+});
+
+it('explains invalid data settings without applying resources', function (): void {
+    config(['hosting-kubernetes.data_sources.fixture.settings.allowed_images' => []]);
+    $this->artisan('hosting:deploy-data-cluster fixture')->assertFailed();
+    Http::assertNothingSent();
+    expect(AuditEntry::query()->count())->toBe(0);
+});
+
+it('records sanitized failure evidence when the database operator is unavailable', function (): void {
+    $this->operatorAvailable = false;
+    $this->artisan('hosting:deploy-data-cluster fixture')->assertFailed();
+    $entry = AuditEntry::query()->where('event', 'hosting.data-cluster.failed')->firstOrFail();
+    expect($entry->team_id)->toBe('team-a')
+        ->and($entry->context)->toMatchArray(['status' => 'failed', 'partial_state_possible' => true])
+        ->and(json_encode($entry))->not->toContain('private-token', 'private-password');
+    Http::assertNotSent(fn (Request $request): bool => $request->method() !== 'GET');
+});
+
+it('reports database provisioning failure when audit persistence also fails', function (): void {
+    $this->operatorAvailable = false;
+    DB::unprepared("CREATE TRIGGER reject_data_audit BEFORE INSERT ON control_panel_audit_entries BEGIN SELECT RAISE(ABORT, 'private audit storage error'); END");
+    try {
+        $this->artisan('hosting:deploy-data-cluster fixture')->assertFailed()
+            ->expectsOutput('The failure could not be persisted to the audit log.')
+            ->expectsOutput('Database cluster provisioning failed. Inspect operator availability, ownership, credentials and partial state. Persistent volumes were not deleted.');
+    } finally {
+        DB::unprepared('DROP TRIGGER reject_data_audit');
+    }
+    expect(AuditEntry::query()->count())->toBe(0);
+});
+
+it('requires a cluster identity and readable Redis StatefulSets before reporting readiness', function (string $fault): void {
+    $this->redisReadFault = $fault;
+    expect(deployDataFixture($this, 'redis')['ready'])->toBeFalse();
+})->with(['missing uid', 'missing statefulset']);
+
+it('rejects database configuration drift in the final operator read-back', function (): void {
+    $this->dataReadDrift = true;
+    expect(fn () => deployDataFixture($this, 'postgresql'))
+        ->toThrow(RuntimeException::class, 'The database cluster differs from its approved configuration.');
+});

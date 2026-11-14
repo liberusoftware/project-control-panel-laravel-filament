@@ -9,7 +9,7 @@ use RuntimeException;
 
 final readonly class KubernetesProvisioner
 {
-    public function __construct(private Factory $http, private TenantWorkloadPlan $plans, private DataClusterPlan $dataPlans) {}
+    public function __construct(private Factory $http, private WorkloadPlanBuilder $plans, private DataClusterPlan $dataPlans) {}
 
     /**
      * @param  array<string, mixed>  $settings

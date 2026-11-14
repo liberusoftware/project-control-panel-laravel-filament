@@ -153,10 +153,11 @@ it('rejects unsafe cluster configuration before making network calls', function 
         'duplicate' => $this->nodes['ns2']['url'] = $this->nodes['ns1']['url'],
         'header-injection' => $this->nodes['ns1']['api_key'] = "key\r\nOther: value",
         'single-node' => array_pop($this->nodes),
+        'invalid-server-id' => $this->nodes['ns1']['server_id'] = '../other',
     };
     expect(fn () => $this->cluster->synchronize('example.com', $this->owner, $this->records, $this->nodes))->toThrow(InvalidArgumentException::class);
     $this->http->assertNothingSent();
-})->with(['plaintext', 'redirect-query', 'userinfo', 'duplicate', 'header-injection', 'single-node']);
+})->with(['plaintext', 'redirect-query', 'userinfo', 'duplicate', 'header-injection', 'single-node', 'invalid-server-id']);
 
 it('compiles mail and certificate records into canonical PowerDNS RRsets', function (): void {
     $sets = $this->compiler->rrsets('EXAMPLE.COM.', [...$this->records,
@@ -180,3 +181,35 @@ it('rejects unsafe or inconsistent DNS records before touching any node', functi
     [['name' => '@', 'type' => 'TXT', 'content' => "line\nbreak", 'ttl' => 300]],
     [['name' => 'mail', 'type' => 'MX', 'content' => 'mail.example.net', 'priority' => 65536, 'ttl' => 300]],
 ]);
+
+it('refuses conflicting record types on a CNAME owner before making network calls', function (): void {
+    $records = [...$this->records,
+        ['name' => 'www', 'type' => 'CNAME', 'content' => 'target.example.net', 'ttl' => 300],
+        ['name' => 'www', 'type' => 'TXT', 'content' => 'conflicting record', 'ttl' => 300],
+    ];
+
+    expect(fn () => $this->cluster->synchronize('example.com', $this->owner, $records, $this->nodes))
+        ->toThrow(InvalidArgumentException::class, 'A CNAME cannot coexist with other record types.');
+    $this->http->assertNothingSent();
+});
+
+it('reports a failed zone creation without publishing records to that node', function (): void {
+    $http = new Factory();
+    $http->preventStrayRequests();
+    $http->fake(function (Request $request) {
+        if (str_contains($request->url(), 'ns2.example.net')) {
+            return Factory::response(['error' => 'private provider detail'], $request->method() === 'GET' ? 404 : 500);
+        }
+
+        return $request->method() === 'PATCH'
+            ? Factory::response('', 204)
+            : Factory::response($this->remote['ns1']);
+    });
+
+    $result = (new PowerDnsCluster($http, $this->compiler))->synchronize('example.com', $this->owner, $this->records, $this->nodes);
+
+    expect($result['verified'])->toBeFalse()
+        ->and($result['nodes'])->toBe(['ns1' => ['status' => 'verified'], 'ns2' => ['status' => 'publication-failed']])
+        ->and(json_encode($result))->not->toContain('private provider detail');
+    $http->assertNotSent(fn (Request $request): bool => $request->method() === 'PATCH' && str_contains($request->url(), 'ns2.example.net'));
+});

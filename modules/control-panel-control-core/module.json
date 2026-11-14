@@ -3,7 +3,7 @@
   "name": "control-panel-control-core",
   "display_name": "Control Panel Control Core",
   "description": "Nodes, capabilities, credentials, inventory and safe operation coordination.",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "category": "capability",
   "provider": "Liberu\\ControlPanel\\ControlCore\\ControlCoreServiceProvider",
   "requires": {

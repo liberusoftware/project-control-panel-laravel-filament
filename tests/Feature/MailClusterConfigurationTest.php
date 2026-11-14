@@ -1,11 +1,15 @@
 <?php
 
+use App\Console\Commands\ConfigureMailCluster;
 use App\Hosting\Mail\StalwartCluster;
 use Illuminate\Cache\ArrayStore;
 use Illuminate\Cache\Repository;
+use Illuminate\Container\Container;
+use Illuminate\Foundation\Application;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
+use Liberu\ControlPanel\ControlCore\Actions\WriteAuditEntry;
 use Liberu\ControlPanel\ControlCore\ControlCoreServiceProvider;
 use Liberu\ControlPanel\ControlCore\Models\AuditEntry;
 use Liberu\ControlPanel\Mail\MailServiceProvider;
@@ -25,6 +29,7 @@ beforeEach(function (): void {
     $this->stateMismatch = false;
     $this->unhealthy = false;
     $this->version = 1;
+    $this->responseFault = null;
     Http::preventStrayRequests();
     Http::fake(function (Request $request) {
         $second = str_contains($request->url(), 'mail2.');
@@ -43,15 +48,36 @@ beforeEach(function (): void {
                 if ($second && $this->divergentStore && $object === 'DataStore') {
                     $value['database'] = 'foreign-mailstore';
                 }
+                if ($second && $this->version > 1 && $object === 'InMemoryStore') {
+                    if ($this->responseFault === 'memory-type') {
+                        $value['@type'] = 'Default';
+                    } elseif ($this->responseFault === 'memory-seeds') {
+                        $value['urls'] = ['rediss://foreign.example.test:6379' => true];
+                    }
+                }
                 $replies[] = [$method, ['state' => (string) $this->version, 'list' => [['id' => 'singleton', ...$value]], 'notFound' => []], $id];
             } elseif ($object === 'Action') {
-                $replies[] = [$method, ['created' => ['reload' => ['id' => 'reload-action']]], $id];
+                if ($second && $this->responseFault === 'reload') {
+                    $replies[] = ['error', ['type' => 'serverFail', 'description' => 'private reload detail'], $id];
+                } else {
+                    $replies[] = [$method, ['created' => ['reload' => ['id' => 'reload-action']]], $id];
+                }
             } elseif ($this->stateMismatch) {
                 $replies[] = ['error', ['type' => 'stateMismatch', 'description' => 'private upstream data'], $id];
             } else {
                 $this->shared[$object] = $arguments['update']['singleton'];
                 $this->version++;
                 $replies[] = [$method, ['updated' => ['singleton' => null]], $id];
+            }
+        }
+
+        if ($second && str_ends_with($request['methodCalls'][0][0], '/get')) {
+            if ($this->responseFault === 'incomplete') {
+                array_pop($replies);
+            } elseif ($this->responseFault === 'malformed') {
+                $replies[0][1]['list'] = [];
+            } elseif ($this->responseFault === 'duplicate') {
+                $replies[1] = $replies[0];
             }
         }
 
@@ -119,5 +145,106 @@ it('writes sanitized team-scoped audit evidence through the mail cluster command
 it('refuses a foreign team source before contacting mail infrastructure', function (): void {
     config(['hosting-mail.sources.fixture.team_id' => 'team-b']);
     $this->artisan('hosting:configure-mail-cluster fixture')->assertFailed();
+    Http::assertNothingSent();
+});
+
+it('rejects unsafe memory-store or mail-node configuration before sending credentials', function (string $fault): void {
+    match ($fault) {
+        'missing secret' => $this->memoryStore['authSecret'] = [],
+        'single Redis seed' => array_pop($this->memoryStore['urls']),
+        'invalid secret name' => $this->memoryStore['authSecret']['variableName'] = 'unsafe-name',
+        'plaintext node' => $this->nodes['mail1']['url'] = 'http://mail1.example.test',
+        'duplicate nodes' => $this->nodes['mail2']['url'] = $this->nodes['mail1']['url'],
+        'header injection' => $this->nodes['mail1']['token'] = "token\r\nInjected: value",
+    };
+
+    expect(fn () => app(StalwartCluster::class)->configure($this->nodes, $this->dataStore, $this->memoryStore))
+        ->toThrow(InvalidArgumentException::class);
+    Http::assertNothingSent();
+})->with(['missing secret', 'single Redis seed', 'invalid secret name', 'plaintext node', 'duplicate nodes', 'header injection']);
+
+it('rejects incomplete or ambiguous JMAP configuration without changing any node', function (string $fault): void {
+    $this->responseFault = $fault;
+    $result = app(StalwartCluster::class)->configure($this->nodes, $this->dataStore, $this->memoryStore);
+
+    expect($result['verified'])->toBeFalse()
+        ->and($result['nodes']['mail2']['status'])->toBe('preflight-failed');
+    Http::assertNotSent(fn (Request $request): bool => collect($request['methodCalls'] ?? [])->contains(fn (array $call): bool => str_ends_with($call[0], '/set')));
+})->with(['incomplete', 'malformed', 'duplicate']);
+
+it('requires successful reload and exact memory-store read-back on every node', function (string $fault): void {
+    $this->responseFault = $fault;
+    $result = app(StalwartCluster::class)->configure($this->nodes, $this->dataStore, $this->memoryStore);
+
+    expect($result['verified'])->toBeFalse()
+        ->and($result['nodes']['mail1']['status'])->toBe('configuration-verified')
+        ->and($result['nodes']['mail2']['status'])->toBe('verification-failed')
+        ->and(json_encode($result))->not->toContain('private reload detail', 'private-mail');
+})->with(['reload', 'memory-type', 'memory-seeds']);
+
+it('requires complete operator source configuration before making mail requests', function (): void {
+    config(['hosting-mail.sources.fixture.memory_store' => null]);
+    $this->artisan('hosting:configure-mail-cluster fixture')->assertFailed()
+        ->expectsOutput('Configure a team-owned mail domain, allowlisted nodes, shared datastore and in-memory store.');
+    Http::assertNothingSent();
+});
+
+it('runs command preflight without writing mail settings', function (): void {
+    $this->artisan('hosting:configure-mail-cluster fixture --dry-run')->assertSuccessful()
+        ->expectsOutput('Shared-store preflight passed. No server settings were changed.');
+    expect(AuditEntry::query()->where('event', 'hosting.mail-cluster.configured')->firstOrFail()->context['dry_run'])->toBeTrue();
+    Http::assertSentCount(2);
+});
+
+it('preserves a competing operator lock and never contacts mail nodes', function (): void {
+    $key = hash('sha256', json_encode([$this->dataStore['host'], $this->dataStore['port'], $this->dataStore['database']], JSON_THROW_ON_ERROR));
+    $lock = Cache::lock('hosting:mail-cluster:'.$key, 600);
+    expect($lock->get())->toBeTrue();
+    try {
+        $this->artisan('hosting:configure-mail-cluster fixture')->assertFailed()
+            ->expectsOutput('This mail cluster is already being configured.');
+        expect($lock->isOwnedByCurrentProcess())->toBeTrue();
+        Http::assertNothingSent();
+    } finally {
+        $lock->release();
+    }
+});
+
+it('reports failed cluster verification through the command and records the evidence', function (): void {
+    $this->unhealthy = true;
+    $this->artisan('hosting:configure-mail-cluster fixture')->assertFailed()
+        ->expectsOutput('Cluster-wide mail configuration was not verified. Review node results and reconcile before serving mail.');
+    expect(AuditEntry::query()->where('event', 'hosting.mail-cluster.configured')->firstOrFail()->context['verified'])->toBeFalse();
+});
+
+it('explains invalid mail configuration and releases its lock for a corrected retry', function (): void {
+    config(['hosting-mail.sources.fixture.memory_store.authSecret' => []]);
+    $this->artisan('hosting:configure-mail-cluster fixture')->assertFailed()
+        ->expectsOutput('Use a TLS Redis/Valkey Cluster in-memory store with at least two seeds and a node-local environment secret.');
+    Http::assertNothingSent();
+    config(['hosting-mail.sources.fixture.memory_store' => $this->memoryStore]);
+    $this->artisan('hosting:configure-mail-cluster fixture')->assertSuccessful();
+});
+
+it('sanitizes unexpected infrastructure failures before displaying them to the operator', function (): void {
+    Cache::shouldReceive('lock')->once()->andThrow(new RuntimeException('private Redis credentials'));
+    $this->artisan('hosting:configure-mail-cluster fixture')->assertFailed()
+        ->expectsOutput('Mail cluster configuration failed. Check API permissions, shared storage and node connectivity. Datastore configuration and mailboxes were not migrated.');
+    Http::assertNothingSent();
+});
+
+it('requires the owning modules before configuring mail infrastructure', function (): void {
+    $original = Container::getInstance();
+    $mail = app(StalwartCluster::class);
+    $audit = app(WriteAuditEntry::class);
+    $command = Mockery::mock(ConfigureMailCluster::class)->makePartial();
+    $command->shouldReceive('error')->once()->with('Enable mail and control-core modules before configuring mail clusters.');
+
+    try {
+        Container::setInstance(new Application(dirname(__DIR__, 2)));
+        expect($command->handle($mail, $audit))->toBe(1);
+    } finally {
+        Container::setInstance($original);
+    }
     Http::assertNothingSent();
 });

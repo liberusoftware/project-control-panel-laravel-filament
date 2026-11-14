@@ -3,11 +3,24 @@
   "name": "control-panel-backups-livewire",
   "display_name": "Control Panel Backups Livewire",
   "description": "Livewire snapshot inventory for the control panel.",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "category": "presentation",
   "provider": "Liberu\\ControlPanel\\BackupsLivewire\\BackupsLivewireServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-control-panel-backups": "^1.0"}},
-  "capabilities": ["control-panel.backups.livewire"],
-  "features": ["Policy inventory", "Snapshot inventory", "Restore state", "Verification state"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-control-panel-backups": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.backups.livewire"
+  ],
+  "features": [
+    "Policy inventory",
+    "Snapshot inventory",
+    "Restore state",
+    "Verification state"
+  ],
   "default_enabled": false
 }

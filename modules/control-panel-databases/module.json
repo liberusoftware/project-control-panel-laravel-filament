@@ -3,11 +3,27 @@
   "name": "control-panel-databases",
   "display_name": "Control Panel Databases",
   "description": "Engines, databases, users, privileges, backups, upgrades, health, and remote access.",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "category": "capability",
   "provider": "Liberu\\ControlPanel\\Databases\\DatabasesServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-manager": "^1.0"}},
-  "capabilities": ["control-panel.databases"],
-  "features": ["Database engines", "Database lifecycle", "Users and privileges", "Backups", "Upgrades", "Health checks", "Remote access"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-manager": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.databases"
+  ],
+  "features": [
+    "Database engines",
+    "Database lifecycle",
+    "Users and privileges",
+    "Backups",
+    "Upgrades",
+    "Health checks",
+    "Remote access"
+  ],
   "default_enabled": false
 }

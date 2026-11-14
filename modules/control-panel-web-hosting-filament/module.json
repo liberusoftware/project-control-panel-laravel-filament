@@ -3,12 +3,38 @@
   "name": "control-panel-web-hosting-filament",
   "display_name": "Control Panel Web Hosting Filament",
   "description": "Filament panel boundary for domain and virtual-host administration.",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "category": "presentation",
   "provider": "Liberu\\ControlPanel\\WebHostingFilament\\WebHostingFilamentServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-control-panel-web-hosting": "^1.0"}},
-  "capabilities": ["control-panel.web-hosting.filament"],
-  "features": ["Domains", "Virtual hosts", "Runtime versions", "Web servers", "SSL certificates", "Logs", "Redirects", "Applications", "Git deployments", "Subdomains"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-control-panel-web-hosting": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.web-hosting.filament"
+  ],
+  "features": [
+    "Domains",
+    "Virtual hosts",
+    "Runtime versions",
+    "Web servers",
+    "SSL certificates",
+    "Logs",
+    "Redirects",
+    "Applications",
+    "Git deployments",
+    "Subdomains"
+  ],
   "default_enabled": false,
-  "presentation": {"filament": {"admin": ["Liberu\\ControlPanel\\WebHostingFilament\\WebHostingFilamentPlugin"], "app": []}}
+  "presentation": {
+    "filament": {
+      "admin": [
+        "Liberu\\ControlPanel\\WebHostingFilament\\WebHostingFilamentPlugin"
+      ],
+      "app": []
+    }
+  }
 }

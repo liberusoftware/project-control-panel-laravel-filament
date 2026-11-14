@@ -198,3 +198,14 @@ it('does not let a foreign deployment alter the current team website next step',
     Livewire::test(Websites::class)->assertSee('Next: configure hosting, or ask your team administrator.')
         ->assertDontSee('Next: review failed deployments before publishing another release.');
 });
+
+it('does not retain a previous team in a prepared attention filter after logout', function (): void {
+    $component = Livewire::test(Websites::class);
+    $filter = $component->instance()->getTable()->getFilter('needs_attention');
+    auth()->logout();
+
+    $query = $filter->apply(Domain::query()->where('team_id', $this->team->getKey()));
+    expect(Websites::canAccess())->toBeFalse()
+        ->and($query->getBindings())->toContain('')
+        ->and(count(array_filter($query->getBindings(), fn (mixed $binding): bool => $binding === $this->team->getKey())))->toBe(1);
+});

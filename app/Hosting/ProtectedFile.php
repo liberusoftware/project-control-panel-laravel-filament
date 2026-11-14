@@ -6,7 +6,7 @@ use InvalidArgumentException;
 
 final class ProtectedFile
 {
-    public static function read(string $path, int $maximumBytes): string
+    public static function read(string $path, int $maximumBytes, StreamIo $streams = new NativeStreamIo()): string
     {
         if (! str_starts_with($path, '/') || $maximumBytes < 1 || $maximumBytes > 8 * 1024 * 1024) {
             throw new InvalidArgumentException('Choose an absolute protected file path and a bounded byte limit.');
@@ -25,19 +25,19 @@ final class ProtectedFile
         if ($before === false || ! self::hasPrivatePermissions($before, $uid, $groups) || $before['size'] > $maximumBytes) {
             throw new InvalidArgumentException('Protected files must be private operator-owned files or root-owned Secret files readable only by the operator group, within the byte limit.');
         }
-        $input = @fopen($path, 'rb');
+        $input = $streams->open($path, 'rb');
         if ($input === false) {
             throw new InvalidArgumentException('The protected file is unreadable.');
         }
         try {
-            $opened = fstat($input);
+            $opened = $streams->inspect($input);
             if ($opened === false || $opened['ino'] !== $before['ino'] || $opened['dev'] !== $before['dev']
                 || ! self::hasPrivatePermissions($opened, $uid, $groups)) {
                 throw new InvalidArgumentException('The protected file changed or became an unsafe link.');
             }
-            $contents = stream_get_contents($input, $maximumBytes + 1);
+            $contents = $streams->read($input, $maximumBytes + 1);
         } finally {
-            fclose($input);
+            $streams->close($input);
         }
         if ($contents === false || strlen($contents) > $maximumBytes) {
             throw new InvalidArgumentException('The protected file exceeds its byte limit.');

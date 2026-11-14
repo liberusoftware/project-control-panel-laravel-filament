@@ -3,11 +3,31 @@
   "name": "control-panel-web-hosting-livewire",
   "display_name": "Control Panel Web Hosting Livewire",
   "description": "Livewire domain inventory for the control panel.",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "category": "presentation",
   "provider": "Liberu\\ControlPanel\\WebHostingLivewire\\WebHostingLivewireServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-control-panel-web-hosting": "^1.0"}},
-  "capabilities": ["control-panel.web-hosting.livewire"],
-  "features": ["Domain inventory", "Virtual-host inventory", "Runtime inventory", "Web server inventory", "SSL certificate inventory", "Hosting log inventory", "Redirect inventory", "Application inventory", "Git deployment inventory", "Cron job inventory", "Subdomain inventory"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-control-panel-web-hosting": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.web-hosting.livewire"
+  ],
+  "features": [
+    "Domain inventory",
+    "Virtual-host inventory",
+    "Runtime inventory",
+    "Web server inventory",
+    "SSL certificate inventory",
+    "Hosting log inventory",
+    "Redirect inventory",
+    "Application inventory",
+    "Git deployment inventory",
+    "Cron job inventory",
+    "Subdomain inventory"
+  ],
   "default_enabled": false
 }

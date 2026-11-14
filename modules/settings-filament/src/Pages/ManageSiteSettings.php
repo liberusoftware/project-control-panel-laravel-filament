@@ -17,11 +17,17 @@ class ManageSiteSettings extends SettingsPage
 
     protected static string $settings = SiteSettings::class;
 
-    protected static string|\UnitEnum|null $navigationGroup = 'Preferences';
+    protected static string|\UnitEnum|null $navigationGroup = 'Settings';
 
-    protected static ?string $title = 'Site Settings';
+    public static function getNavigationLabel(): string
+    {
+        return __('filament.pages.manage_site_settings');
+    }
 
-    protected static ?string $navigationLabel = 'Site Settings';
+    public function getTitle(): string
+    {
+        return __('filament.pages.manage_site_settings');
+    }
 
     public function form(Schema $schema): Schema
     {

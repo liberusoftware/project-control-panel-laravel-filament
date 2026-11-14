@@ -1,12 +1,21 @@
 <?php
 
+use App\Console\Commands\CollectHostingMigrationBackups;
 use App\Hosting\Migrations\NativeBackupTransport;
+use Illuminate\Container\Container;
+use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+use Liberu\ControlPanel\ControlCore\Actions\WriteAuditEntry;
 use Liberu\ControlPanel\ControlCore\ControlCoreServiceProvider;
 use Liberu\ControlPanel\ControlCore\Models\AuditEntry;
 use Liberu\ControlPanel\Kubernetes\Actions\RegisterCluster;
 use Liberu\ControlPanel\Kubernetes\Actions\SuspendCluster;
 use Liberu\ControlPanel\Kubernetes\KubernetesServiceProvider;
+use Ramsey\Uuid\Uuid;
+use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Process\Process;
 
 beforeEach(function (): void {
@@ -118,4 +127,117 @@ it('accepts an explicitly approved whole-server collection without claiming an i
     $this->artisan('hosting:collect-migration-backups legacy')->assertSuccessful();
     $directory = glob($this->workspace.'/staging/migration-*')[0];
     expect($this->calls)->toBe(3)->and(glob($directory.'/*.native'))->toHaveCount(2);
+});
+
+it('requires installed migration modules before reading SSH credentials', function (): void {
+    $original = Container::getInstance();
+    $transport = app(NativeBackupTransport::class);
+    $audit = app(WriteAuditEntry::class);
+    $command = Mockery::mock(CollectHostingMigrationBackups::class)->makePartial();
+    $command->shouldReceive('error')->once()->with('Enable Kubernetes and control-core before collecting migration backups.');
+    try {
+        Container::setInstance(new Application(dirname(__DIR__, 2)));
+        expect($command->handle($transport, $audit, new Filesystem()))->toBe(1);
+    } finally {
+        Container::setInstance($original);
+    }
+    expect($this->calls)->toBe(0);
+});
+
+it('rejects insufficient free staging capacity after reading the manifest', function (): void {
+    $this->manifest['archives'][0]['bytes'] = (int) disk_free_space($this->workspace.'/staging') + 1;
+    config(['hosting-migrations.max_collection_bytes' => 1099511627776,
+        'hosting-migrations.sources.legacy.transport.max_archive_bytes' => 1099511627776]);
+    $this->artisan('hosting:collect-migration-backups legacy')->assertFailed();
+    expect($this->calls)->toBe(1)->and(glob($this->workspace.'/staging/*'))->toBe([])
+        ->and(AuditEntry::query()->where('event', 'hosting.migration-backups.collected')->exists())->toBeFalse();
+});
+
+it('discards a collection when another file occupies its receipt path', function (): void {
+    $this->afterTransfer = function (): void {
+        $directory = glob($this->workspace.'/staging/migration-*')[0];
+        file_put_contents($directory.'/manifest.json', 'concurrent-receipt');
+    };
+    $warnings = [];
+    set_error_handler(static function (int $severity, string $message) use (&$warnings): bool {
+        if ($severity === E_WARNING && str_contains($message, 'fopen(') && str_contains($message, 'manifest.json')) {
+            $warnings[] = $message;
+
+            return true;
+        }
+
+        return false;
+    });
+    try {
+        $this->artisan('hosting:collect-migration-backups legacy')->assertFailed();
+    } finally {
+        restore_error_handler();
+    }
+    expect($warnings)->toHaveCount(1)->and($this->calls)->toBe(2)
+        ->and(glob($this->workspace.'/staging/*'))->toBe([])
+        ->and(AuditEntry::query()->where('event', 'hosting.migration-backups.collected')->exists())->toBeFalse();
+});
+
+it('does not reuse or remove a staging directory created before collection', function (): void {
+    $id = Uuid::fromString('a8d5b19d-2fb4-4bde-9c07-58ab751072b9');
+    $directory = $this->workspace.'/staging/migration-'.$id;
+    mkdir($directory, 0700);
+    file_put_contents($directory.'/existing', 'preserved');
+    Str::createUuidsUsing(static fn (): UuidInterface => $id);
+    $warnings = [];
+    set_error_handler(static function (int $severity, string $message) use (&$warnings): bool {
+        if ($severity === E_WARNING && str_contains($message, 'mkdir()') && str_contains($message, 'File exists')) {
+            $warnings[] = $message;
+
+            return true;
+        }
+
+        return false;
+    });
+    try {
+        $this->artisan('hosting:collect-migration-backups legacy')->assertFailed();
+    } finally {
+        restore_error_handler();
+        Str::createUuidsNormally();
+    }
+    expect($warnings)->toHaveCount(1)->and($this->calls)->toBe(1)
+        ->and(file_get_contents($directory.'/existing'))->toBe('preserved')
+        ->and(AuditEntry::query()->where('event', 'hosting.migration-backups.collected')->exists())->toBeFalse();
+});
+
+it('discards downloaded archives when the collection receipt cannot be fully written', function (): void {
+    $limits = posix_getrlimit();
+    $soft = $limits['soft filesize'] === 'unlimited' ? POSIX_RLIMIT_INFINITY : $limits['soft filesize'];
+    $hard = $limits['hard filesize'] === 'unlimited' ? POSIX_RLIMIT_INFINITY : $limits['hard filesize'];
+    $previousSignal = pcntl_signal_get_handler(SIGXFSZ);
+    $armed = true;
+    $injected = false;
+    $writeWarnings = [];
+    set_error_handler(static function (int $severity, string $message) use (&$writeWarnings): bool {
+        if (in_array($severity, [E_WARNING, E_NOTICE], true) && str_contains($message, 'fwrite(')) {
+            $writeWarnings[] = $message;
+
+            return true;
+        }
+
+        return false;
+    });
+    DB::listen(function (QueryExecuted $query) use (&$armed, &$injected, $hard): void {
+        if ($armed && $this->calls > 1 && str_contains($query->sql, 'control_panel_kubernetes_clusters')) {
+            $armed = false;
+            $injected = posix_setrlimit(POSIX_RLIMIT_FSIZE, 1, $hard);
+        }
+    });
+    try {
+        pcntl_signal(SIGXFSZ, SIG_IGN);
+        $this->artisan('hosting:collect-migration-backups legacy')->assertFailed();
+    } finally {
+        $armed = false;
+        posix_setrlimit(POSIX_RLIMIT_FSIZE, $soft, $hard);
+        pcntl_signal(SIGXFSZ, $previousSignal);
+        restore_error_handler();
+    }
+    expect($injected)->toBeTrue()->and($writeWarnings)->not->toBeEmpty()->and($this->calls)->toBe(2)
+        ->and(glob($this->workspace.'/staging/*'))->toBe([])
+        ->and(AuditEntry::query()->where('event', 'hosting.migration-backups.collected')->exists())->toBeFalse();
 });

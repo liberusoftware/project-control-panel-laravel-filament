@@ -1,6 +1,8 @@
 <?php
 
+use App\Hosting\NativeStreamIo;
 use App\Hosting\ProtectedFile;
+use App\Hosting\StreamIo;
 
 it('reads bounded operator-private files', function (): void {
     $path = tempnam(sys_get_temp_dir(), 'hosting-private-');
@@ -48,3 +50,66 @@ it('rejects symbolic and hard-linked credential files', function (): void {
         unlink($path);
     }
 });
+
+it('rejects unbounded reads and relative credential paths', function (string $path, int $limit): void {
+    expect(fn () => ProtectedFile::read($path, $limit))
+        ->toThrow(InvalidArgumentException::class, 'Choose an absolute protected file path and a bounded byte limit.');
+})->with([
+    ['relative-secret', 64],
+    ['/nonexistent/secret', 0],
+    ['/nonexistent/secret', 8 * 1024 * 1024 + 1],
+]);
+
+it('rejects a private file whose owner cannot read its contents', function (): void {
+    $path = tempnam(sys_get_temp_dir(), 'hosting-unreadable-');
+    try {
+        file_put_contents($path, 'protected-value');
+        chmod($path, 0000);
+        expect(fn () => ProtectedFile::read($path, 64))
+            ->toThrow(InvalidArgumentException::class, 'The protected file is unreadable.');
+    } finally {
+        chmod($path, 0600);
+        unlink($path);
+    }
+});
+
+it('rejects stream metadata changed after the protected path check', function (string $fault): void {
+    $path = tempnam(sys_get_temp_dir(), 'hosting-race-');
+    chmod($path, 0600);
+    file_put_contents($path, 'private-value');
+    $metadata = lstat($path);
+    $observed = match ($fault) {
+        'unavailable' => false,
+        'replaced inode' => [...$metadata, 'ino' => $metadata['ino'] + 1],
+        'unsafe permissions' => [...$metadata, 'mode' => 0100644],
+    };
+    $native = new NativeStreamIo();
+    $streams = Mockery::mock(StreamIo::class);
+    $streams->shouldReceive('open')->once()->with($path, 'rb')->andReturnUsing($native->open(...));
+    $streams->shouldReceive('inspect')->once()->andReturn($observed);
+    $streams->shouldReceive('close')->once()->andReturnUsing($native->close(...));
+    try {
+        expect(fn () => ProtectedFile::read($path, 64, $streams))
+            ->toThrow(InvalidArgumentException::class, 'The protected file changed or became an unsafe link.');
+    } finally {
+        unlink($path);
+    }
+})->with(['unavailable', 'replaced inode', 'unsafe permissions']);
+
+it('closes protected streams when reading fails or the file grows beyond the checked size', function (string|false $contents): void {
+    $path = tempnam(sys_get_temp_dir(), 'hosting-read-failure-');
+    chmod($path, 0600);
+    file_put_contents($path, 'short');
+    $native = new NativeStreamIo();
+    $streams = Mockery::mock(StreamIo::class);
+    $streams->shouldReceive('open')->once()->andReturnUsing($native->open(...));
+    $streams->shouldReceive('inspect')->once()->andReturnUsing($native->inspect(...));
+    $streams->shouldReceive('read')->once()->with(Mockery::type('resource'), 9)->andReturn($contents);
+    $streams->shouldReceive('close')->once()->andReturnUsing($native->close(...));
+    try {
+        expect(fn () => ProtectedFile::read($path, 8, $streams))
+            ->toThrow(InvalidArgumentException::class, 'The protected file exceeds its byte limit.');
+    } finally {
+        unlink($path);
+    }
+})->with(['failed read' => [false], 'grew during read' => ['123456789']]);

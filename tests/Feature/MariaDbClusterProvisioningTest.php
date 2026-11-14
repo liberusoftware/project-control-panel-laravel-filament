@@ -38,6 +38,9 @@ beforeEach(function (): void {
             return $this->operatorAvailable ? Http::response(['resources' => [['kind' => 'MariaDB']]]) : Http::response([], 404);
         }
         if (str_ends_with($path, '/statefulsets/app')) {
+            if ($this->statefulSetProblem === 'unavailable') {
+                return Http::response([], 404);
+            }
             $state = ['metadata' => ['generation' => 2, 'ownerReferences' => [['uid' => 'mariadb-uid']]],
                 'spec' => ['replicas' => 3, 'template' => ['spec' => [
                     'containers' => [['image' => $this->databaseImage], ['image' => $this->operatorImage]],
@@ -110,7 +113,7 @@ it('verifies the current-generation operator and every member image before repor
 it('fails readiness for incomplete, foreign, stale or altered member workloads', function (string $problem): void {
     $this->statefulSetProblem = $problem;
     expect(provisionMariaDbFixture($this)['ready'])->toBeFalse();
-})->with(['stale', 'updating', 'missing-replica', 'foreign-owner', 'wrong-image', 'missing-agent', 'wrong-init-image']);
+})->with(['stale', 'updating', 'missing-replica', 'foreign-owner', 'wrong-image', 'missing-agent', 'wrong-init-image', 'unavailable']);
 
 it('does not accept stale operator readiness', function (): void {
     $this->operatorStale = true;

@@ -3,11 +3,27 @@
   "name": "control-panel-dns",
   "display_name": "Control Panel DNS",
   "description": "Zones, records, templates, DNSSEC, providers, and propagation checks.",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "category": "capability",
   "provider": "Liberu\\ControlPanel\\Dns\\DnsServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-manager": "^1.0"}},
-  "capabilities": ["control-panel.dns"],
-  "features": ["DNS zones", "DNS records", "DNS templates", "DNSSEC", "DNS validation", "Providers", "Propagation checks"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-manager": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.dns"
+  ],
+  "features": [
+    "DNS zones",
+    "DNS records",
+    "DNS templates",
+    "DNSSEC",
+    "DNS validation",
+    "Providers",
+    "Propagation checks"
+  ],
   "default_enabled": false
 }

@@ -1,8 +1,10 @@
 <?php
 
 use App\Console\Commands\BootstrapHostingApplication;
+use Illuminate\Database\Connection;
 use Illuminate\Database\Migrations\MigrationRepositoryInterface;
 use Illuminate\Database\Migrations\Migrator;
+use Illuminate\Support\Facades\DB;
 
 it('only seeds for the explicitly selected lifecycle policy and preserves migration failures', function (string $policy, bool $exists, array $ran, bool $seed): void {
     $repository = Mockery::mock(MigrationRepositoryInterface::class);
@@ -30,4 +32,22 @@ it('only seeds for the explicitly selected lifecycle policy and preserves migrat
 
 it('rejects unsupported seed policies before migration', function (): void {
     $this->artisan('hosting:bootstrap', ['--seed-policy' => 'surprise'])->assertExitCode(2);
+});
+
+it('scopes deployment locks to the database and expires abandoned locks after an hour', function (): void {
+    $command = new BootstrapHostingApplication();
+    $connection = Mockery::mock(Connection::class);
+    DB::shouldReceive('connection')->times(3)->andReturn($connection);
+    $connection->shouldReceive('getDriverName')->times(3)->andReturn('mysql');
+    $connection->shouldReceive('getConfig')->with('host')->times(3)->andReturn('database-a', 'database-b', 'database-a');
+    $connection->shouldReceive('getDatabaseName')->times(3)->andReturn('tenant-a', 'tenant-a', 'tenant-b');
+
+    $first = $command->isolatableId();
+    $otherHost = $command->isolatableId();
+    $otherDatabase = $command->isolatableId();
+
+    expect($first)->toBe(hash('sha256', 'mysql:database-a:tenant-a'))
+        ->and($otherHost)->not->toBe($first)
+        ->and($otherDatabase)->not->toBe($first)
+        ->and($command->isolationLockExpiresAt()->format('%h:%i:%s'))->toBe('1:0:0');
 });

@@ -3,11 +3,30 @@
   "name": "control-panel-backups",
   "display_name": "Control Panel Backups",
   "description": "Backup policies, snapshots, encryption, off-site storage, restore, and verification.",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "category": "capability",
   "provider": "Liberu\\ControlPanel\\Backups\\BackupsServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-manager": "^1.0"}},
-  "capabilities": ["control-panel.backups"],
-  "features": ["Policies", "Snapshots", "Application-consistent backup", "Encryption", "Off-site storage", "Restore", "Verification", "Destination health", "Retention", "Schedules"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-manager": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.backups"
+  ],
+  "features": [
+    "Policies",
+    "Snapshots",
+    "Application-consistent backup",
+    "Encryption",
+    "Off-site storage",
+    "Restore",
+    "Verification",
+    "Destination health",
+    "Retention",
+    "Schedules"
+  ],
   "default_enabled": false
 }

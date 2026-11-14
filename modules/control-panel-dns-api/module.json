@@ -3,11 +3,28 @@
   "name": "control-panel-dns-api",
   "display_name": "Control Panel DNS API",
   "description": "Authenticated HTTP transport for DNS zone lifecycle.",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "category": "presentation",
   "provider": "Liberu\\ControlPanel\\DnsApi\\DnsApiServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-control-panel-dns": "^1.0"}},
-  "capabilities": ["control-panel.dns.api"],
-  "features": ["Zone listing", "Zone registration", "DNS records", "DNS templates", "DNSSEC", "Validation", "Providers", "Propagation checks"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-control-panel-dns": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.dns.api"
+  ],
+  "features": [
+    "Zone listing",
+    "Zone registration",
+    "DNS records",
+    "DNS templates",
+    "DNSSEC",
+    "Validation",
+    "Providers",
+    "Propagation checks"
+  ],
   "default_enabled": false
 }

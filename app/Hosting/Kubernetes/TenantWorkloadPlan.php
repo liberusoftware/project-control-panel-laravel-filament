@@ -4,7 +4,7 @@ namespace App\Hosting\Kubernetes;
 
 use InvalidArgumentException;
 
-final class TenantWorkloadPlan
+final class TenantWorkloadPlan implements WorkloadPlanBuilder
 {
     /**
      * @param  array<string, mixed>  $settings

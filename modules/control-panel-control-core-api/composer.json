@@ -15,7 +15,15 @@
       "Liberu\\ControlPanel\\ControlCoreApi\\": "src/"
     }
   },
-  "extra": {"liberu": {"name": "control-panel-control-core-api"}},
-  "version": "1.0.0",
-  "config": {"allow-plugins": {"pestphp/pest-plugin": true}}
+  "extra": {
+    "liberu": {
+      "name": "control-panel-control-core-api"
+    }
+  },
+  "version": "1.0.3",
+  "config": {
+    "allow-plugins": {
+      "pestphp/pest-plugin": true
+    }
+  }
 }

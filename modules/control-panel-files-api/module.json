@@ -3,11 +3,27 @@
   "name": "control-panel-files-api",
   "display_name": "Control Panel Files API",
   "description": "Authenticated HTTP transport for safe file records and scan state.",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "category": "presentation",
   "provider": "Liberu\\ControlPanel\\FilesApi\\FilesApiServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-control-panel-files": "^1.0"}},
-  "capabilities": ["control-panel.files.api"],
-  "features": ["Home directories", "Permissions", "SFTP account lifecycle and key rotation", "File operations", "Quotas", "Scanning", "Retention"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-control-panel-files": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.files.api"
+  ],
+  "features": [
+    "Home directories",
+    "Permissions",
+    "SFTP account lifecycle and key rotation",
+    "File operations",
+    "Quotas",
+    "Scanning",
+    "Retention"
+  ],
   "default_enabled": false
 }

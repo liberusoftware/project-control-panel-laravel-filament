@@ -3,15 +3,19 @@
   "name": "control-panel-accounts",
   "display_name": "Control Panel Accounts",
   "description": "Customer and reseller accounts, packages, quotas, delegation, branding, and suspension.",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "category": "capability",
   "provider": "Liberu\\ControlPanel\\Accounts\\AccountsServiceProvider",
   "requires": {
     "php": "^8.5",
     "laravel": "^13.0",
-    "packages": {"liberusoftware/module-manager": "^1.0"}
+    "packages": {
+      "liberusoftware/module-manager": "^1.0"
+    }
   },
-  "capabilities": ["control-panel.accounts"],
+  "capabilities": [
+    "control-panel.accounts"
+  ],
   "features": [
     "Admin, reseller, and customer hierarchy",
     "Hosting packages",

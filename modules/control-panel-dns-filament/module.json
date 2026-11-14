@@ -3,11 +3,27 @@
   "name": "control-panel-dns-filament",
   "display_name": "Control Panel DNS Filament",
   "description": "Filament panel boundary for DNS zone administration.",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "category": "presentation",
   "provider": "Liberu\\ControlPanel\\DnsFilament\\DnsFilamentServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-control-panel-dns": "^1.0"}},
-  "capabilities": ["control-panel.dns.filament"],
-  "features": ["DNS zones", "DNS records", "DNS templates", "DNSSEC", "Validation", "Providers", "Propagation checks"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-control-panel-dns": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.dns.filament"
+  ],
+  "features": [
+    "DNS zones",
+    "DNS records",
+    "DNS templates",
+    "DNSSEC",
+    "Validation",
+    "Providers",
+    "Propagation checks"
+  ],
   "default_enabled": false
 }

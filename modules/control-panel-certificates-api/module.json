@@ -3,11 +3,26 @@
   "name": "control-panel-certificates-api",
   "display_name": "Control Panel Certificates API",
   "description": "Authenticated HTTP transport for certificate issuance and revocation.",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "category": "presentation",
   "provider": "Liberu\\ControlPanel\\CertificatesApi\\CertificatesApiServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-control-panel-certificates": "^1.0"}},
-  "capabilities": ["control-panel.certificates.api"],
-  "features": ["ACME accounts", "Certificate listing", "Certificate issuance", "Certificate deployment", "Certificate renewal", "Certificate revocation"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-control-panel-certificates": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.certificates.api"
+  ],
+  "features": [
+    "ACME accounts",
+    "Certificate listing",
+    "Certificate issuance",
+    "Certificate deployment",
+    "Certificate renewal",
+    "Certificate revocation"
+  ],
   "default_enabled": false
 }

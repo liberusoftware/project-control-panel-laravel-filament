@@ -1,15 +1,19 @@
 <?php
 
 use App\Console\Commands\PublishHostingDns;
+use App\Hosting\Dns\PowerDnsCluster;
+use App\Hosting\Dns\PowerDnsZone;
 use Illuminate\Cache\ArrayStore;
 use Illuminate\Config\Repository;
 use Illuminate\Container\Container;
+use Illuminate\Contracts\Cache\LockProvider;
 use Illuminate\Database\DatabaseServiceProvider;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Application;
 use Illuminate\Http\Client\Factory;
 use Illuminate\Http\Client\Request;
 use Illuminate\Support\Facades\Facade;
+use Liberu\ControlPanel\Dns\Actions\RecordDnsCheck;
 use Liberu\ControlPanel\Dns\DnsServiceProvider;
 use Liberu\ControlPanel\Dns\Models\DnsCheck;
 use Liberu\ControlPanel\Dns\Models\Zone;
@@ -148,6 +152,43 @@ it('explains inventory validation failures without contacting any DNS node', fun
     $this->zone->records()->firstOrFail()->delete();
     expect($this->tester->execute(['source' => 'fixture']))->toBe(1)
         ->and($this->tester->getDisplay())->toContain('At least two distinct apex nameservers')
+        ->and(DnsCheck::query()->count())->toBe(0);
+    $this->http->assertNothingSent();
+});
+
+it('requires complete operator source configuration before touching DNS', function (): void {
+    $this->configuration->set('hosting-dns.sources.fixture.cluster', null);
+    expect($this->tester->execute(['source' => 'fixture']))->toBe(1)
+        ->and($this->tester->getDisplay())->toContain('Configure an operator-owned DNS source')
+        ->and(DnsCheck::query()->count())->toBe(0);
+    $this->http->assertNothingSent();
+});
+
+it('requires the owning DNS module before publishing records', function (): void {
+    $command = Mockery::mock(PublishHostingDns::class)->makePartial();
+    $command->shouldReceive('error')->once()->with('Enable the control-panel-dns module before publishing DNS.');
+    try {
+        Container::setInstance(new Application(dirname(__DIR__)));
+        expect($command->handle(
+            new PowerDnsCluster($this->http, new PowerDnsZone()),
+            new PowerDnsZone(),
+            new RecordDnsCheck(),
+        ))->toBe(1);
+    } finally {
+        Container::setInstance($this->application);
+    }
+    $this->http->assertNothingSent();
+});
+
+it('sanitizes lock infrastructure failures without recording publication success', function (): void {
+    $cache = Mockery::mock(LockProvider::class);
+    $cache->shouldReceive('lock')->once()->andThrow(new RuntimeException('private Redis password'));
+    $this->application->instance('cache', $cache);
+    Facade::clearResolvedInstance('cache');
+
+    expect($this->tester->execute(['source' => 'fixture']))->toBe(1)
+        ->and($this->tester->getDisplay())->toContain('DNS publication failed. Check the allowlist')
+        ->and($this->tester->getDisplay())->not->toContain('private Redis password')
         ->and(DnsCheck::query()->count())->toBe(0);
     $this->http->assertNothingSent();
 });

@@ -3,12 +3,35 @@
   "name": "control-panel-databases-filament",
   "display_name": "Control Panel Databases Filament",
   "description": "Filament resource for authorized database administration.",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "category": "presentation",
   "provider": "Liberu\\ControlPanel\\DatabasesFilament\\DatabasesFilamentServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-control-panel-databases": "^1.0"}},
-  "capabilities": ["control-panel.databases.filament"],
-  "features": ["Database engines", "Database administration", "Users and privileges", "Backups", "Upgrades", "Health checks", "Remote access"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-control-panel-databases": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.databases.filament"
+  ],
+  "features": [
+    "Database engines",
+    "Database administration",
+    "Users and privileges",
+    "Backups",
+    "Upgrades",
+    "Health checks",
+    "Remote access"
+  ],
   "default_enabled": false,
-  "presentation": {"filament": {"admin": ["Liberu\\ControlPanel\\DatabasesFilament\\DatabasesFilamentPlugin"], "app": []}}
+  "presentation": {
+    "filament": {
+      "admin": [
+        "Liberu\\ControlPanel\\DatabasesFilament\\DatabasesFilamentPlugin"
+      ],
+      "app": []
+    }
+  }
 }

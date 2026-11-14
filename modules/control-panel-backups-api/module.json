@@ -3,11 +3,28 @@
   "name": "control-panel-backups-api",
   "display_name": "Control Panel Backups API",
   "description": "Authenticated HTTP transport for backup policies and snapshots.",
-  "version": "1.0.0",
+  "version": "1.0.3",
   "category": "presentation",
   "provider": "Liberu\\ControlPanel\\BackupsApi\\BackupsApiServiceProvider",
-  "requires": {"php": "^8.5", "laravel": "^13.0", "packages": {"liberusoftware/module-control-panel-backups": "^1.0"}},
-  "capabilities": ["control-panel.backups.api"],
-  "features": ["Policies", "Snapshots", "Destinations", "Destination health", "Schedules", "Restore", "Verification", "Retention"],
+  "requires": {
+    "php": "^8.5",
+    "laravel": "^13.0",
+    "packages": {
+      "liberusoftware/module-control-panel-backups": "^1.0"
+    }
+  },
+  "capabilities": [
+    "control-panel.backups.api"
+  ],
+  "features": [
+    "Policies",
+    "Snapshots",
+    "Destinations",
+    "Destination health",
+    "Schedules",
+    "Restore",
+    "Verification",
+    "Retention"
+  ],
   "default_enabled": false
 }

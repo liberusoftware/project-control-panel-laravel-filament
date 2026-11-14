@@ -2,7 +2,9 @@
 
 namespace App\Hosting\Migrations;
 
+use App\Hosting\NativeStreamIo;
 use App\Hosting\ProtectedFile;
+use App\Hosting\StreamIo;
 use Closure;
 use InvalidArgumentException;
 use RuntimeException;
@@ -12,7 +14,7 @@ use Throwable;
 final readonly class NativeBackupTransport
 {
     /** @param (Closure(list<string>): Process)|null $processFactory */
-    public function __construct(private ?Closure $processFactory = null) {}
+    public function __construct(private ?Closure $processFactory = null, private StreamIo $streams = new NativeStreamIo()) {}
 
     /**
      * @param  array<string, mixed>  $connection
@@ -78,7 +80,7 @@ final readonly class NativeBackupTransport
         if ($temporary === false || ! chmod($temporary, 0600)) {
             throw new RuntimeException('Unable to create a protected transfer file.');
         }
-        $output = @fopen($temporary, 'wb');
+        $output = $this->streams->open($temporary, 'wb');
         if ($output === false) {
             @unlink($temporary);
             throw new RuntimeException('Unable to open a protected transfer file.');
@@ -86,7 +88,8 @@ final readonly class NativeBackupTransport
         $digest = hash_init('sha256');
         $total = 0;
         try {
-            $this->request($connection, ['operation' => 'stream', ...$archive], static function (string $chunk) use ($output, $digest, &$total, $archive): void {
+            $streams = $this->streams;
+            $this->request($connection, ['operation' => 'stream', ...$archive], static function (string $chunk) use ($output, $digest, &$total, $archive, $streams): void {
                 $total += strlen($chunk);
                 if ($total > $archive['bytes']) {
                     throw new RuntimeException('The source sent more bytes than its approved manifest.');
@@ -94,7 +97,7 @@ final readonly class NativeBackupTransport
                 hash_update($digest, $chunk);
                 $offset = 0;
                 while ($offset < strlen($chunk)) {
-                    $written = fwrite($output, substr($chunk, $offset));
+                    $written = $streams->write($output, substr($chunk, $offset));
                     if ($written === false || $written === 0) {
                         throw new RuntimeException('Unable to write protected staging data.');
                     }
@@ -105,7 +108,7 @@ final readonly class NativeBackupTransport
             if ($total !== $archive['bytes'] || ! hash_equals($archive['sha256'], $sha256)) {
                 throw new RuntimeException('The received archive does not match its approved length and checksum.');
             }
-            if (! fflush($output) || ! fsync($output)) {
+            if (! $this->streams->flush($output) || ! $this->streams->sync($output)) {
                 throw new RuntimeException('The received archive could not be synchronized.');
             }
             // Publish exclusively: a concurrently created destination is never overwritten.
@@ -115,7 +118,7 @@ final readonly class NativeBackupTransport
 
             return ['bytes' => $total, 'sha256' => $sha256];
         } finally {
-            fclose($output);
+            $this->streams->close($output);
             @unlink($temporary);
         }
     }
